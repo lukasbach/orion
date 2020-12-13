@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { GameContainer } from './GameContainer';
+import { BoardContainer } from './BoardContainer';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GameContainer>
+      <BoardContainer />
+    </GameContainer>
   </React.StrictMode>,
   document.getElementById('root')
 );
