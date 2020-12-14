@@ -60,25 +60,19 @@ export const Mutations = {
         return {
           ...state,
           currentAction: CurrentAction.MovingTilePickingTile,
-          bankState: emptyBank(state.bankState, bankId),
-          actioningBankId: bankId,
-          actioningTileColor: state.bankState.banks[bankId].color,
+          actioningBankId: bankId
         }
       case BankAction.Recolor:
         return {
           ...state,
           currentAction: CurrentAction.RecoloringPickingTile,
-          bankState: emptyBank(state.bankState, bankId),
-          actioningBankId: bankId,
-          actioningTileColor: state.bankState.banks[bankId].color,
+          actioningBankId: bankId
         }
       case BankAction.PlaceInRow:
         return {
           ...state,
           currentAction: CurrentAction.PlacingTile,
-          bankState: emptyBank(state.bankState, bankId),
-          actioningBankId: bankId,
-          actioningTileColor: state.bankState.banks[bankId].color,
+          actioningBankId: bankId
         }
 
     }
@@ -89,13 +83,14 @@ export const Mutations = {
       ...state,
       currentAction: CurrentAction.ChoosingBankToApply,
       actioningBankId: undefined,
+      bankState: emptyBank(state.bankState, state.actioningBankId!),
       boardState: mutateBoardState(state.boardState, [{
         y: tileId, x: rowId,
         changeTo: () => ({
-          color: state.actioningTileColor
+          color: state.bankState.banks[state.actioningBankId!].color
         })
       }]),
-      ...prepareNextRoundState(state),
+      ...prepareNextRoundState(state, state.actioningBankId),
     }
   },
 
@@ -104,14 +99,14 @@ export const Mutations = {
       ...state,
       currentAction: CurrentAction.ChoosingBankToApply,
       actioningBankId: undefined,
-      // bankState: emptyBank(state.bankState, state.actioningBankId!),
+      bankState: emptyBank(state.bankState, state.actioningBankId!),
       boardState: mutateBoardState(state.boardState, [{
         y: tileId, x: rowId,
         changeTo: () => ({
           color: nextColor(state, state.boardState.tiles[rowId]![tileId]!.color!)
         })
       }]),
-      ...prepareNextRoundState(state),
+      ...prepareNextRoundState(state, state.actioningBankId),
     };
   },
 
@@ -120,9 +115,9 @@ export const Mutations = {
       ...state,
       currentAction: CurrentAction.MovingTileMoving,
       actioningBankId: undefined,
-      // bankState: emptyBank(state.bankState, state.actioningBankId!),
+      bankState: emptyBank(state.bankState, state.actioningBankId!),
       movingTileSourcePosition: [rowId, tileId],
-      ...prepareNextRoundState(state),
+      ...prepareNextRoundState(state, state.actioningBankId),
     };
   },
 

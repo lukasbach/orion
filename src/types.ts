@@ -74,7 +74,7 @@ export interface GameState {
   };
   movingTileSourcePosition?: [number, number];
   actioningBankId?: number;
-  actioningTileColor?: TileColor;
+  placingTileColor?: TileColor;
 }
 
 //export type Mutation = (...params: any[]) => InitiatedUpdateAction;

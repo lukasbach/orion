@@ -5,7 +5,7 @@ import {
   BoardState,
   BoardTileState,
   CurrentAction,
-  GameState,
+  GameState, IndividualBankState,
   TileColor,
 } from './types';
 
@@ -67,15 +67,16 @@ export const nextColor = (state: GameState, color: TileColor) => {
   return nextColor
 }
 
-export const bankActionsAvailable = (state: GameState) => {
-  return state.bankState.banks
+export const bankActionsAvailable = (state: GameState, bankToEmpty?: number) => {
+  const banks: BankState = !bankToEmpty ? state.bankState : emptyBank(state.bankState, bankToEmpty);
+  return banks.banks
     .map((bank, bankId) => bank.count === state.bankSetup.banks[bankId].tiles)
     .reduce((a, b) => a || b, false);
 }
 
-export const prepareNextRoundState = (state: GameState): Partial<GameState> => {
-  console.log("Next round available: ", !bankActionsAvailable(state), state)
-  if (!bankActionsAvailable(state)) {
+export const prepareNextRoundState = (state: GameState, bankToEmpty?: number): Partial<GameState> => {
+  console.log("Next round available: ", !bankActionsAvailable(state, bankToEmpty), state)
+  if (!bankActionsAvailable(state, bankToEmpty)) {
     return {
       currentAction: CurrentAction.ChoosingFromBag,
       currentBag: 0,
