@@ -41,7 +41,7 @@ export class GameBoard {
   }
 
   public canPlaceInRow(row: number) {
-    return this.state[row].filter(tile => tile?.color === undefined).length > 0;
+    return this.state[row].filter(tile => !!tile && tile.color === undefined).length > 0;
   }
 
   public canRecolorInRow(row: number) {

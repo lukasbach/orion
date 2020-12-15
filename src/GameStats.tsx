@@ -9,7 +9,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginRight: '100px',
+    marginRight: '200px',
     paddingRight: '10px',
     ' h3': {
       fontSize: '22px',

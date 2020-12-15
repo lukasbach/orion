@@ -57,6 +57,7 @@ export enum CurrentAction {
   MovingTileMoving,
   RecoloringPickingTile,
   ChoosingBankToApply,
+  Animation
 }
 
 export type BagNumber = number | 'remainings';

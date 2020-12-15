@@ -5,6 +5,13 @@ import { BagsUi } from './BagsUi';
 import cxs from 'cxs';
 
 const styles = {
+  container: cxs({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: '100%'
+  }),
   boardAndBankContainer: cxs({
     display: 'flex',
     alignItems: 'center',
@@ -13,9 +20,8 @@ const styles = {
 }
 
 export const BoardContainer: React.FC<{}> = props => {
-
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.boardAndBankContainer}>
         <BoardUi />
         <BankUi />

@@ -39,13 +39,13 @@ export class Game {
     return this.gameStateSerializer.serializeState();
   }
 
-  public actChooseFromBag(color: TileColor) {
+  public async actChooseFromBag(color: TileColor) {
     this.currentAction = CurrentAction.PickingBank;
     this.bags.takeFromBag(color);
     this.updateState();
   }
 
-  public actChooseAction(bankId: number) {
+  public async actChooseAction(bankId: number) {
     const bank = this.banks.getBank(bankId);
     this.actioningBankId = bankId;
     switch (bank.action) {
@@ -62,7 +62,7 @@ export class Game {
     this.updateState();
   }
 
-  public actChooseBank(bankId: number) {
+  public async actChooseBank(bankId: number) {
     const picked = this.bags.getPickedTiles();
 
     if (!picked) {
@@ -73,7 +73,8 @@ export class Game {
 
     if (this.bags.noValidPicksLeft()) {
       const penalty = this.bags.countUnpickedTiles();
-      this.addPoints(-penalty);
+      await this.addPoints(-penalty);
+      // TODO remove items from bag here already
       if (this.banks.areActionsAvailable()) {
         this.currentAction = CurrentAction.ChoosingBankToApply;
       } else {
@@ -116,35 +117,35 @@ export class Game {
     }
   }
 
-  public actClickBoardTile(row: number, col: number) {
+  public async actClickBoardTile(row: number, col: number) {
     switch (this.currentAction) {
       case CurrentAction.PlacingTile:
-        this.actPlaceTile(row, col);
+        await this.actPlaceTile(row, col);
         break;
       case CurrentAction.MovingTilePickingTile:
-        this.actStartMovingTile(row, col);
+        await this.actStartMovingTile(row, col);
         break;
       case CurrentAction.MovingTileMoving:
-        this.actCompleteMovingTile(row, col);
+        await this.actCompleteMovingTile(row, col);
         break;
       case CurrentAction.RecoloringPickingTile:
-        this.actRecolorTile(row, col);
+        await this.actRecolorTile(row, col);
         break;
     }
   }
 
-  public actPlaceTile(row: number, col: number) {
+  public async actPlaceTile(row: number, col: number) {
     if (this.actioningBankId === undefined) {
       throw Error('Cannot place tile, no actioning bank');
     }
     this.board.setAt(row, col, this.banks.getBank(this.actioningBankId).color);
     this.banks.resetBank(this.actioningBankId);
-    this.maybeAddPointsForTileFinalization(row, col);
-    this.afterBankAction();
+    await this.maybeAddPointsForTileFinalization(row, col);
+    await this.afterBankAction();
     this.updateState();
   }
 
-  public actRecolorTile(row: number, col: number) {
+  public async actRecolorTile(row: number, col: number) {
     if (this.actioningBankId === undefined) {
       throw Error('Cannot place tile, no actioning bank');
     }
@@ -160,12 +161,12 @@ export class Game {
     //   ?? this.initialState.colors[0]);
     this.board.setAt(row, col, bank.color);
     this.banks.resetBank(this.actioningBankId);
-    this.maybeAddPointsForTileFinalization(row, col);
-    this.afterBankAction();
+    await this.maybeAddPointsForTileFinalization(row, col);
+    await this.afterBankAction();
     this.updateState();
   }
 
-  public actStartMovingTile(row: number, col: number) {
+  public async actStartMovingTile(row: number, col: number) {
     if (this.actioningBankId === undefined) {
       throw Error('Cannot move tile, no actioning bank');
     }
@@ -175,45 +176,58 @@ export class Game {
     this.updateState();
   }
 
-  public actCompleteMovingTile(row: number, col: number) {
+  public async actCompleteMovingTile(row: number, col: number) {
     if (this.movingTileSourcePosition === undefined) {
       throw Error('Cannot move tile, no source pos');
     }
     this.board.setAt(row, col, this.board.getAt(...this.movingTileSourcePosition)?.color);
     this.board.setAt(...this.movingTileSourcePosition, undefined);
-    this.maybeAddPointsForTileFinalization(row, col);
-    this.afterBankAction();
+    await this.maybeAddPointsForTileFinalization(row, col);
+    await this.afterBankAction();
     this.updateState();
   }
 
-  private maybeAddPointsForTileFinalization(row: number, col: number) {
+  private async wait(time = 500) {
+    const action = this.currentAction;
+    this.currentAction = CurrentAction.Animation;
+    this.updateState();
+    await new Promise(res => setTimeout(res, time));
+    this.currentAction = action;
+    this.updateState();
+  }
+
+  private async maybeAddPointsForTileFinalization(row: number, col: number) {
     if (this.board.isFinalized(row, col)) {
-      this.addPoints(POINTS_FOR_TILE_FINALIZATION);
+      await this.addPoints(POINTS_FOR_TILE_FINALIZATION);
     }
   }
 
-  private addPoints(points: number) {
-    this.points += points;
+  private async addPoints(points: number, time?: number) {
+    for (let i = 0; i < Math.abs(points); i++) {
+      await this.wait(time);
+      this.points += (points < 0 ? -1 : 1);
+      this.updateState();
+    }
   }
 
-  private afterBankAction() {
+  private async afterBankAction() {
     if (this.actioningBankId === undefined) {
       throw Error('Cannot clean bank action, no actioning bank');
     }
     this.actioningBankId = undefined;
 
     if (!this.banks.areActionsAvailable()) {
-      this.prepareNextRound();
+      await this.prepareNextRound();
     } else {
       this.currentAction = CurrentAction.ChoosingBankToApply;
     }
   }
 
-  private prepareNextRound() {
+  private async prepareNextRound() {
     this.bags.reshuffle();
     this.currentAction = CurrentAction.ChoosingFromBag;
     this.roundNumber++;
-    this.addPoints(-1);
+    await this.addPoints(-1);
   }
 
   private updateState() {
