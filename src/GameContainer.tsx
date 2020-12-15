@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import { BankAction, CurrentAction, GameState, GameStateContextValue } from './types';
 import { boardSetups } from './boardSetups';
 import { getBags, getInitialBoardState } from './utils';
+import { Game } from './game/Game';
 
 export const GameStateContext = React.createContext<GameStateContextValue>(null as any);
 
@@ -35,6 +36,7 @@ const gameAfterBagChoosing = JSON.parse('{"boardSetup":{"tiles":[[null,null,null
 
 export const GameContainer: React.FC<{}> = props => {
   const [state, setState] = useState<GameState>(initialGame);
+  const game = useRef(new Game(setState, state));
 
   console.log(state)
 
@@ -46,6 +48,7 @@ export const GameContainer: React.FC<{}> = props => {
     <GameStateContext.Provider value={{
       state,
       updateState,
+      game: game.current,
       perform: action => {
         setState(action(state))
       }

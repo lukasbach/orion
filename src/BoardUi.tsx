@@ -14,8 +14,8 @@ const styles = {
 }
 
 export const BoardUi: React.FC<{}> = props => {
-  const game = useGame();
-  const { boardSetup, boardState } = game.state;
+  const { game, state } = useGame();
+  const { boardSetup, boardState } = state;
 
   return (
     <div>
@@ -28,28 +28,38 @@ export const BoardUi: React.FC<{}> = props => {
               const tileState = boardState.tiles[rowId][tileId];
               const tileSetup = boardSetup.tiles[rowId][tileId];
 
-              if (tileState?.color !== undefined) {
+              return (
+                <Tile
+                  color={tileState?.color}
+                  clickable={game.canClickBoardTile(rowId, tileId)}
+                  onClick={() => game.actClickBoardTile(rowId, tileId)}
+                  border={true}
+                  borderColor={tileSetup?.requiredColor ?? undefined}
+                />
+              );
+
+              /*if (tileState?.color !== undefined) {
                 if (
-                  game.state.currentAction === CurrentAction.RecoloringPickingTile
+                  state.currentAction === CurrentAction.RecoloringPickingTile
                 ) {
                   return (
                     <Tile
                       color={tileState.color}
                       clickable={true}
-                      onClick={() => game.perform(Mutations.recolorTile(rowId, tileId))}
+                      onClick={() => game.actRecolorTile(rowId, tileId)}
                       border={true}
                       borderColor={tileSetup?.requiredColor}
                     />
                   );
                 } else if (
-                  game.state.currentAction === CurrentAction.MovingTilePickingTile
+                  state.currentAction === CurrentAction.MovingTilePickingTile
                   // TODO check free tiles
                 ) {
                   return (
                     <Tile
                       color={tileState.color}
                       clickable={true}
-                      onClick={() => game.perform(Mutations.startMovingTile(rowId, tileId))}
+                      onClick={() => game.actStartMovingTile(rowId, tileId)}
                       border={true}
                       borderColor={tileSetup?.requiredColor}
                     />
@@ -65,9 +75,9 @@ export const BoardUi: React.FC<{}> = props => {
                 }
               } else {
                 if (
-                  game.state.currentAction === CurrentAction.PlacingTile &&
-                  game.state.actioningBankId !== undefined &&
-                  game.state.bankSetup.banks[game.state.actioningBankId].placementRow === rowId
+                  state.currentAction === CurrentAction.PlacingTile &&
+                  state.actioningBankId !== undefined &&
+                  state.bankSetup.banks[state.actioningBankId].placementRow === rowId
                 ) {
                   return (
                     <CustomTile
@@ -75,15 +85,15 @@ export const BoardUi: React.FC<{}> = props => {
                       noContent={true}
                       border={true}
                       clickable={true}
-                      onClick={() => game.perform(Mutations.placeTile(rowId, tileId))}
+                      onClick={() => game.actPlaceTile(rowId, tileId)}
                       borderColor={tileSetup?.requiredColor !== undefined ? tileColors[tileSetup.requiredColor] : undefined}
                     />
                   );
                 } else if (
-                  game.state.currentAction === CurrentAction.MovingTileMoving &&
+                  state.currentAction === CurrentAction.MovingTileMoving &&
                   (
-                    Math.abs(game.state.movingTileSourcePosition![0] - rowId) <= 1 &&
-                    Math.abs(game.state.movingTileSourcePosition![1] - tileId) <= 1
+                    Math.abs(state.movingTileSourcePosition![0] - rowId) <= 1 &&
+                    Math.abs(state.movingTileSourcePosition![1] - tileId) <= 1
                   )
                 ) {
                   return (
@@ -92,7 +102,7 @@ export const BoardUi: React.FC<{}> = props => {
                       noContent={true}
                       border={true}
                       clickable={true}
-                      onClick={() => game.perform(Mutations.completeMovingTile(rowId, tileId))}
+                      onClick={() => game.actCompleteMovingTile(rowId, tileId)}
                       borderColor={tileSetup?.requiredColor !== undefined ? tileColors[tileSetup.requiredColor] : undefined}
                     />
                   );
@@ -106,7 +116,7 @@ export const BoardUi: React.FC<{}> = props => {
                     />
                   );
                 }
-              }
+              }*/
             }
           }) }
         </div>

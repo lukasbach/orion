@@ -4,13 +4,12 @@ import { useGame } from './GameContainer';
 import { Tile } from './Tile';
 import { CustomTile } from './CustomTile';
 import { dummyTileColor } from './tileColors';
-import { Mutations } from './Mutations';
 
 export const BagUi: React.FC<{
   bag: BagState,
   bagId: number,
 }> = props => {
-  const game = useGame();
+  const { game, state } = useGame();
   const bag = props.bag;
 
   return (
@@ -18,17 +17,18 @@ export const BagUi: React.FC<{
       {
         bag.tiles.map(tile => (
           tile !== null ? (
-              <Tile
-                color={tile}
-                clickable={(
-                  (
-                    game.state.currentBag === props.bagId ||
-                      game.state.currentBag === 'remainings'
-                  ) &&
-                  game.state.currentAction === CurrentAction.ChoosingFromBag
-                )}
-                onClick={() => game.perform(Mutations.chooseFromBag(tile))}
-              />
+            <Tile
+              color={tile}
+              clickable={(
+                (
+                  state.currentBag === props.bagId ||
+                  state.currentBag === 'remainings'
+                ) &&
+                state.currentAction === CurrentAction.ChoosingFromBag &&
+                game.bags.isColorAValidPick(tile)
+              )}
+              onClick={() => game.actChooseFromBag(tile)}
+            />
             ) : (
               <CustomTile
                 color={dummyTileColor}

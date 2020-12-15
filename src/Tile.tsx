@@ -2,10 +2,10 @@ import * as React from 'react';
 import { TileColor } from './types';
 import { CustomTile } from './CustomTile';
 import { tileNames } from './tileNames';
-import { tileColors } from './tileColors';
+import { dummyTileColor, tileColors } from './tileColors';
 
 export const Tile: React.FC<{
-  color: TileColor,
+  color?: TileColor,
   borderColor?: TileColor,
   active?: boolean,
   border?: boolean,
@@ -17,10 +17,11 @@ export const Tile: React.FC<{
   return (
     <CustomTile
       { ...props }
-      color={tileColors[props.color]}
+      color={props.color !== undefined ? tileColors[props.color] : dummyTileColor}
+      noContent={props.color === undefined}
       borderColor={props.borderColor !== undefined ? tileColors[props.borderColor] : undefined}
     >
-      { tileNames[props.color] }
+      { props.color !== undefined && tileNames[props.color] }
     </CustomTile>
   );
 };

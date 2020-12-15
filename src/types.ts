@@ -1,3 +1,5 @@
+import { Game } from './game/Game';
+
 export type TileColor = 0 | 1 | 2 | 3 | 4 | 5;
 export const Colors: TileColor[] = [0, 1, 2, 3, 4, 5];
 
@@ -44,7 +46,7 @@ export interface BoardState {
 }
 
 export interface BagState {
-  tiles: [TileColor | null, TileColor | null, TileColor | null, TileColor | null];
+  tiles: Array<TileColor | null>;
 }
 
 export enum CurrentAction {
@@ -57,14 +59,16 @@ export enum CurrentAction {
   ChoosingBankToApply,
 }
 
+export type BagNumber = number | 'remainings';
+
 export interface GameState {
   boardSetup: BoardSetup;
   boardState: BoardState;
   bankSetup: BankSetup;
   bankState: BankState;
-  bags: [BagState, BagState, BagState];
+  bags: BagState[];
   colors: TileColor[];
-  currentBag: number | 'remainings';
+  currentBag: BagNumber;
   roundNumber: number;
   points: number;
   currentAction: CurrentAction;
@@ -82,6 +86,7 @@ export type InitiatedUpdateAction = (oldState: GameState) => GameState;
 
 export interface GameStateContextValue {
   state: Readonly<GameState>,
+  game: Game,
   updateState: (changed: Partial<GameState>) => void,
   perform: (action: InitiatedUpdateAction) => void,
 }
