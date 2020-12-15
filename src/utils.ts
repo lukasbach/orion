@@ -18,8 +18,8 @@ const getBag = (colors: TileColor[]): BagState => ({
   tiles: [randomItem(colors), randomItem(colors), randomItem(colors), randomItem(colors)]
 });
 
-export const getBags = (colors: TileColor[]): [BagState, BagState, BagState] => [
-  getBag(colors), getBag(colors), getBag(colors)
+export const getBags = (colors: TileColor[]): BagState[] => [
+  getBag(colors), getBag(colors), getBag(colors), getBag(colors)
 ];
 
 export const getRemainingTileCountFromBags = (state: GameState, color: TileColor) => {

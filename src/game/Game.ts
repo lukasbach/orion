@@ -3,6 +3,7 @@ import { BankAction, CurrentAction, GameState, TileColor } from '../types';
 import { GameBoard } from './GameBoard';
 import { BankSet } from './BankSet';
 import { BagSet } from './BagSet';
+import { POINTS_FOR_TILE_FINALIZATION } from '../constants';
 
 export class Game {
   public gameStateSerializer: GameStateSerializer;
@@ -71,7 +72,8 @@ export class Game {
     this.banks.addToBank(bankId, picked.color, picked.count);
 
     if (this.bags.noValidPicksLeft()) {
-      // TODO penalty, empty bags
+      const penalty = this.bags.countUnpickedTiles();
+      this.addPoints(-penalty);
       if (this.banks.areActionsAvailable()) {
         this.currentAction = CurrentAction.ChoosingBankToApply;
       } else {
@@ -83,16 +85,21 @@ export class Game {
     this.updateState();
   }
 
-  public canClickBoardTile(row: number, col: number) {
-    switch (this.currentAction) {
+  public canClickBoardTile(row: number, col: number, action?: CurrentAction) {
+    action = action ?? this.currentAction;
+    switch (action) {
       case CurrentAction.PlacingTile:
         return (
           !this.board.notEmpty(row, col) &&
-          this.actioningBankId !== undefined
-          && row === this.banks.getBank(this.actioningBankId).placementRow
+          this.actioningBankId !== undefined &&
+          row === this.banks.getBank(this.actioningBankId).placementRow
         );
       case CurrentAction.MovingTilePickingTile:
-        return this.board.notEmpty(row, col) && this.board.canMove(row, col);
+        return (
+          this.board.notEmpty(row, col) &&
+          this.board.canMove(row, col) &&
+          !this.board.isFinalized(row, col)
+        );
       case CurrentAction.MovingTileMoving:
         return (
           !!this.movingTileSourcePosition &&
@@ -100,7 +107,10 @@ export class Game {
           this.board.isAdjacent([row, col], this.movingTileSourcePosition)
         );
       case CurrentAction.RecoloringPickingTile:
-        return this.board.notEmpty(row, col);
+        return (
+          this.board.notEmpty(row, col) &&
+          !this.board.isFinalized(row, col)
+        );
       default:
         return false;
     }
@@ -129,6 +139,7 @@ export class Game {
     }
     this.board.setAt(row, col, this.banks.getBank(this.actioningBankId).color);
     this.banks.resetBank(this.actioningBankId);
+    this.maybeAddPointsForTileFinalization(row, col);
     this.afterBankAction();
     this.updateState();
   }
@@ -149,6 +160,7 @@ export class Game {
     //   ?? this.initialState.colors[0]);
     this.board.setAt(row, col, bank.color);
     this.banks.resetBank(this.actioningBankId);
+    this.maybeAddPointsForTileFinalization(row, col);
     this.afterBankAction();
     this.updateState();
   }
@@ -169,8 +181,15 @@ export class Game {
     }
     this.board.setAt(row, col, this.board.getAt(...this.movingTileSourcePosition)?.color);
     this.board.setAt(...this.movingTileSourcePosition, undefined);
+    this.maybeAddPointsForTileFinalization(row, col);
     this.afterBankAction();
     this.updateState();
+  }
+
+  private maybeAddPointsForTileFinalization(row: number, col: number) {
+    if (this.board.isFinalized(row, col)) {
+      this.addPoints(POINTS_FOR_TILE_FINALIZATION);
+    }
   }
 
   private addPoints(points: number) {

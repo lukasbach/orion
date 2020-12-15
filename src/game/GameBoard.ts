@@ -1,5 +1,6 @@
 import { BoardSetup, BoardState, BoardTileSetup, BoardTileState, GameState, TileColor } from '../types';
 import { Game } from './Game';
+import { POINTS_FOR_TILE_FINALIZATION } from '../constants';
 
 export class GameBoard {
   private setup: Array<Array<BoardTileSetup | null>>;
@@ -34,12 +35,17 @@ export class GameBoard {
     return (this.getAt(row, col)?.color ?? undefined) !== undefined;
   }
 
+  public isFinalized(row: number, col: number) {
+    const tile = this.getAt(row, col);
+    return tile !== undefined && tile !== null && tile.color === tile.requiredColor;
+  }
+
   public canPlaceInRow(row: number) {
     return this.state[row].filter(tile => tile?.color === undefined).length > 0;
   }
 
   public canRecolorInRow(row: number) {
-    return this.state[row].filter(tile => tile?.color !== undefined).length > 0;
+    return this.state[row].filter((tile, col) => tile?.color !== undefined && !this.isFinalized(row, col)).length > 0;
   }
 
   public canMoveInRow(row: number) {
@@ -48,7 +54,7 @@ export class GameBoard {
 
   public canMove(row: number, col: number) {
     return (
-      this.state[row][col]?.color !== undefined && (
+      this.state[row][col]?.color !== undefined && !this.isFinalized(row, col) && (
         this.state[row][col - 1]?.color === undefined ||
         this.state[row][col + 1]?.color === undefined ||
         this.state[row - 1][col - 1]?.color === undefined ||

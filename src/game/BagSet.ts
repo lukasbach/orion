@@ -18,7 +18,13 @@ export class BagSet {
     this.currentBag = initialState.currentBag;
   }
 
-  private countUnpickedTiles() {}
+  public countUnpickedTiles() {
+    return this.bags
+      .map(bag => bag.tiles.filter(tile => tile !== null))
+      .reduce((a, b) => [...a, ...b], [])
+      .length;
+  }
+
   private getPotentialBagPicks(): Array<{ color: TileColor, count: number }> {
     if (this.currentBag === 'remainings') {
       const aggregated: BagState = {
@@ -111,7 +117,7 @@ export class BagSet {
       return;
     }
     this.currentBag = this.currentBag + 1;
-    if (this.currentBag >= 3) {
+    if (this.currentBag >= this.bags.length) {
       this.currentBag = 'remainings';
     }
   }

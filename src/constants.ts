@@ -1,0 +1,1 @@
+export const POINTS_FOR_TILE_FINALIZATION = 3;

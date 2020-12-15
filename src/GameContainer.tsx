@@ -14,11 +14,11 @@ const initialGame: GameState = {
   boardState: getInitialBoardState(boardSetups[0]),
   bankSetup: {
     banks: [
-      { tiles: 4, action: BankAction.Move },
-      { tiles: 3, action: BankAction.PlaceInRow, placementRow: 2 },
-      { tiles: 2, action: BankAction.PlaceInRow, placementRow: 3 },
-      { tiles: 3, action: BankAction.PlaceInRow, placementRow: 4 },
-      { tiles: 4, action: BankAction.Recolor },
+      { tiles: 5, action: BankAction.Move },
+      { tiles: 4, action: BankAction.PlaceInRow, placementRow: 2 },
+      { tiles: 3, action: BankAction.PlaceInRow, placementRow: 3 },
+      { tiles: 4, action: BankAction.PlaceInRow, placementRow: 4 },
+      { tiles: 5, action: BankAction.Recolor },
     ]
   },
   bankState: {
@@ -28,7 +28,7 @@ const initialGame: GameState = {
   bags: getBags([0, 1, 2, 3]),
   currentAction: CurrentAction.ChoosingFromBag,
   currentBag: 0,
-  points: 0,
+  points: 10,
   roundNumber: 0
 };
 
