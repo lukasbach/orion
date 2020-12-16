@@ -8,6 +8,7 @@ import { Game } from './game/Game';
 export const GameStateContext = React.createContext<GameStateContextValue>(null as any);
 
 export const useGame = () => useContext(GameStateContext);
+export const useIsSmall = () => useContext(GameStateContext).small;
 
 const initialGame: GameState = {
   boardSetup: boardSetups[0],
@@ -37,6 +38,7 @@ const gameAfterBagChoosing = JSON.parse('{"boardSetup":{"tiles":[[null,null,null
 export const GameContainer: React.FC<{}> = props => {
   const [state, setState] = useState<GameState>(initialGame);
   const game = useRef(new Game(setState, state));
+  const [small, setSmall] = useState(false);
 
   console.log(state)
 
@@ -46,12 +48,8 @@ export const GameContainer: React.FC<{}> = props => {
 
   return (
     <GameStateContext.Provider value={{
-      state,
-      updateState,
+      state, small,
       game: game.current,
-      perform: action => {
-        setState(action(state))
-      }
     }}>
       { props.children }
     </GameStateContext.Provider>

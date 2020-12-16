@@ -2,6 +2,7 @@ import cxs from 'cxs';
 import * as React from 'react';
 import cx from 'classnames';
 import Color from 'color';
+import { useIsSmall } from './GameContainer';
 
 const activeStyles: cxs.CSSObject = {
   height: '66px',
@@ -33,6 +34,20 @@ const styles = {
     margin: '-6px 0 0 0',
     textAlign: 'center'
   }),
+  containerSmall: cxs({
+    width: '40px',
+    height: '40px',
+    borderRadius: '6px',
+    borderWidth: '2px',
+    margin: '2px',
+  }),
+  innerSmall: cxs({
+    height: '32px',
+    borderBottomLeftRadius: '6px',
+    borderBottomRightRadius: '6px',
+    fontSize: '32px',
+    margin: '0 0 0 0'
+  }),
   innerActive: cxs(activeStyles),
   innerClickable: cxs({
     cursor: 'pointer',
@@ -53,11 +68,13 @@ export const CustomTile: React.FC<{
   onClick?: () => void,
   borderColor?: string,
 }> = props => {
+  const small = useIsSmall();
 
   return (
     <div
       className={cx(
         styles.container,
+        small && styles.containerSmall,
         props.border && cxs({
           borderColor: Color(props.borderColor ?? props.color).darken(.4).toString()
         }),
@@ -76,6 +93,7 @@ export const CustomTile: React.FC<{
       { !props.noContent && (
         <div className={cx(
           styles.inner,
+          small && styles.innerSmall,
           props.active && styles.innerActive,
           !props.active && props.clickable && styles.innerClickable,
           cxs({

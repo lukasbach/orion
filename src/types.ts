@@ -88,6 +88,5 @@ export type InitiatedUpdateAction = (oldState: GameState) => GameState;
 export interface GameStateContextValue {
   state: Readonly<GameState>,
   game: Game,
-  updateState: (changed: Partial<GameState>) => void,
-  perform: (action: InitiatedUpdateAction) => void,
+  small: boolean,
 }
