@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useCallback, useContext, useRef, useState } from 'react';
-import { BankAction, CurrentAction, GameState, GameStateContextValue } from './types';
-import { boardSetups } from './boardSetups';
-import { getBags, getInitialBoardState } from './utils';
-import { Game } from './game/Game';
+import { BankAction, CurrentAction, GameState, GameStateContextValue } from '../types';
+import { boardSetups } from '../boardSetups';
+import { getBags, getInitialBoardState } from '../utils';
+import { Game } from '../game/Game';
 
 export const GameStateContext = React.createContext<GameStateContextValue>(null as any);
 

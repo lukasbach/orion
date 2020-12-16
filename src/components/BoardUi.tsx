@@ -3,9 +3,9 @@ import { useGame } from './GameContainer';
 import cxs from 'cxs';
 import { CustomTile } from './CustomTile';
 import { Tile } from './Tile';
-import { dummyTileColor, tileColors } from './tileColors';
-import { CurrentAction } from './types';
-import { Mutations } from './Mutations';
+import { dummyTileColor, tileColors } from '../tileColors';
+import { CurrentAction } from '../types';
+import { Mutations } from '../Mutations';
 
 const styles = {
   rowContainer: cxs({

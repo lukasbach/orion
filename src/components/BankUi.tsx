@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useGame } from './GameContainer';
 import { CustomTile } from './CustomTile';
 import cxs from 'cxs';
-import { CurrentAction } from './types';
+import { CurrentAction } from '../types';
 import { Tile } from './Tile';
 import { GameStats } from './GameStats';
-import { BankActionButton } from './components/BankActionButton';
-import { tileColors } from './tileColors';
+import { BankActionButton } from './BankActionButton';
+import { tileColors } from '../tileColors';
 
 const styles = {
   rowContainer: cxs({

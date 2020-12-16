@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { GameContainer } from './GameContainer';
-import { BoardContainer } from './BoardContainer';
+import { GameContainer } from './components/GameContainer';
+import { BoardContainer } from './components/BoardContainer';
+import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>

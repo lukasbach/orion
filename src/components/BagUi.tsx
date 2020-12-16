@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { BagState, CurrentAction } from './types';
+import { BagState, CurrentAction } from '../types';
 import { useGame } from './GameContainer';
 import { Tile } from './Tile';
 import { CustomTile } from './CustomTile';
-import { dummyTileColor } from './tileColors';
+import { dummyTileColor } from '../tileColors';
 import cxs from 'cxs';
 import cx from 'classnames';
 

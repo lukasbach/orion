@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { TileColor } from './types';
+import { TileColor } from '../types';
 import { CustomTile } from './CustomTile';
-import { tileNames } from './tileNames';
-import { dummyTileColor, tileColors } from './tileColors';
+import { tileNames } from '../tileNames';
+import { dummyTileColor, tileColors } from '../tileColors';
 
 export const Tile: React.FC<{
   color?: TileColor,
