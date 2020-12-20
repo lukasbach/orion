@@ -1,0 +1,17 @@
+export enum TelemetryCodes {
+  StartLevelPrefix = 'start-level-',
+  CompleteLevelPrefix = 'complete-level-',
+  AbortLevelPrefix = 'abort-level-',
+  FailLevelPrefix = 'fail-level-',
+  RetryLevelPrefix = 'retry-level-',
+  StartLevel = 'start-level-',
+  CompleteLevel = 'complete-level-',
+  AbortLevel = 'abort-level-',
+  FailLevel = 'fail-level-',
+  RetryLevel = 'retry-level-',
+  Revert = 'revert',
+  PlaceTile = 'place-tile',
+  RecolorTile = 'recolor-tile',
+  MoveTile = 'move-tile',
+  FinalizeTile = 'finalize-tile',
+};

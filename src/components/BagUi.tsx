@@ -19,7 +19,11 @@ const styles = {
     position: 'absolute',
     left: '0',
     top: '0',
-    padding: '20px 20px'
+    padding: '20px 20px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    width: '170px',
   }),
   svg: cxs({
     position: 'absolute',

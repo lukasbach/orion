@@ -22,6 +22,8 @@ const styles = {
       textShadow: `0 -4px 0 rgba(0, 0, 0, .3)`,
       marginLeft: '4px',
       color: 'rgba(255, 255, 255, 1)',
+      display: 'inline-block',
+      width: '40px'
     }
   })
 }

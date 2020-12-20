@@ -52,19 +52,22 @@ export class BankSet {
 
   public isActionAvailableInBank(bankId: number) {
     const bank = this.getBank(bankId);
+
+    if (bank.tiles === 0) {
+      return false;
+    }
+
     if (bank.count < bank.tiles) {
       return false;
     }
 
-    if (bank.placementRow) {
-      switch (bank.action) {
-        case BankAction.Move:
-          return this.game.board.canMoveInRow(bank.placementRow);
-        case BankAction.Recolor:
-          return this.game.board.canRecolorInRow(bank.placementRow);
-        case BankAction.PlaceInRow:
-          return this.game.board.canPlaceInRow(bank.placementRow);
-      }
+    switch (bank.action) {
+      case BankAction.Move:
+        return this.game.board.canMoveAnything();
+      case BankAction.Recolor:
+        return this.game.board.canRecolor();
+      case BankAction.PlaceInRow:
+        return this.game.board.canPlaceInRow(bank.placementRow!);
     }
 
     return true;

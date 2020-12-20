@@ -3,6 +3,7 @@ import { BoardUi } from './BoardUi';
 import { BankUi } from './BankUi';
 import { BagsUi } from './BagsUi';
 import cxs from 'cxs';
+import { Tutorial } from './Tutorial';
 
 const styles = {
   container: cxs({
@@ -27,6 +28,7 @@ export const BoardContainer: React.FC<{}> = props => {
         <BankUi />
       </div>
       <BagsUi />
+      <Tutorial />
     </div>
   );
 };

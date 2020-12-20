@@ -3,19 +3,24 @@ import { BagNumber, BagState, Colors, GameState, TileColor } from '../types';
 
 export class BagSet {
   private bags: BagState[];
-  private currentBag: BagNumber;
+  public currentBag: BagNumber;
   private picked?: {
     color: TileColor;
     count: number;
   };
   private randomItem = <T>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+  private bagPresetCounter;
 
   constructor(
     private game: Game,
-    private initialState: GameState
+    private initialState: GameState,
   ) {
     this.bags = initialState.bags;
     this.currentBag = initialState.currentBag;
+    this.bagPresetCounter = initialState.bagPresetCounter ?? 0;
+    if (initialState.bagPresets) {
+      this.bags = initialState.bagPresets[0].map(tiles => ({ tiles }));
+    }
   }
 
   public countUnpickedTiles() {
@@ -72,7 +77,11 @@ export class BagSet {
   }
 
   public reshuffle() {
-    this.bags = this.bags.map(bag => ({ tiles: bag.tiles.map(tile => this.randomItem(this.initialState.colors)) }));
+    if (this.initialState.bagPresets) {
+      this.bags = this.initialState.bagPresets[(++this.bagPresetCounter) % this.initialState.bagPresets.length].map(tiles => ({ tiles }));
+    } else {
+      this.bags = this.bags.map(bag => ({ tiles: bag.tiles.map(tile => this.randomItem(this.initialState.colors)) }));
+    }
     this.currentBag = 0;
   }
 
@@ -126,7 +135,8 @@ export class BagSet {
     return {
       bags: this.bags,
       currentBag: this.currentBag,
-      tilesPickedFromBag: this.picked
+      tilesPickedFromBag: this.picked,
+      bagPresetCounter: this.bagPresetCounter
     };
   }
 }

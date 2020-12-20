@@ -57,12 +57,16 @@ export enum CurrentAction {
   MovingTileMoving,
   RecoloringPickingTile,
   ChoosingBankToApply,
-  Animation
+  Animation,
+  Finished
 }
 
 export type BagNumber = number | 'remainings';
 
+export type TutorialRenderer = undefined | ((state: GameState) => string[] | undefined);
+
 export interface GameState {
+  name?: string;
   boardSetup: BoardSetup;
   boardState: BoardState;
   bankSetup: BankSetup;
@@ -73,13 +77,44 @@ export interface GameState {
   roundNumber: number;
   points: number;
   currentAction: CurrentAction;
-  tilesPickedFromBag?: {
+  tilesPickedFromBag?: { // TODO remove
     color: TileColor;
     count: number;
   };
   movingTileSourcePosition?: [number, number];
   actioningBankId?: number;
   placingTileColor?: TileColor;
+  end?: 'won' | 'lost';
+  bagPresets?: TileColor[][][];
+  bagPresetCounter?: number;
+  tutorialRenderer?: TutorialRenderer;
+}
+
+export enum LevelCategory {
+  Tutorial,
+  Easy,
+  Medium,
+  Hard,
+  Unfinished,
+  TooHard,
+  Undoable,
+  NotEntertaining,
+  Uncategorized
+}
+
+export type GameLevel = Pick<GameState, 'boardSetup' | 'bankSetup' | 'points' | 'colors'> & {
+  bagCount: number,
+  bagSize: number,
+  name: string,
+  category?: LevelCategory,
+  bagPresets?: TileColor[][][],
+  tutorialRenderer?: TutorialRenderer,
+};
+
+export interface LevelPreview {
+  bd: Array<Array<TileColor | 9>>,
+  bk: Array<number>,
+  nm: string,
 }
 
 //export type Mutation = (...params: any[]) => InitiatedUpdateAction;

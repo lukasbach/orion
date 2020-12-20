@@ -24,6 +24,7 @@ const styles = {
     margin: '4px',
     backgroundClip: 'content-box',
     cursor: 'default',
+    pointerEvents: 'all',
   }),
   inner: cxs({
     height: '61px',
@@ -58,7 +59,7 @@ const styles = {
   }),
 };
 
-export const CustomTile: React.FC<{
+export interface CustomTileProps {
   // kind: 1 | 2 | 3 | 4 | 5 | 6
   color: string,
   active?: boolean,
@@ -67,7 +68,9 @@ export const CustomTile: React.FC<{
   clickable?: boolean,
   onClick?: () => void,
   borderColor?: string,
-}> = props => {
+}
+
+export const CustomTile: React.FC<CustomTileProps> = props => {
   const small = useIsSmall();
 
   return (

@@ -8,7 +8,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    marginTop: '40px'
+    marginTop: '0px'
   })
 }
 

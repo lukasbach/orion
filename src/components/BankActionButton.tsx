@@ -9,6 +9,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    pointerEvents: 'all',
   }),
   inner: cxs({
     fontFamily: '"Nanum Pen Script", cursive',

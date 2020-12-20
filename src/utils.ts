@@ -12,13 +12,13 @@ import {
 export const getInitialBoardState = (setup: BoardSetup): BoardState =>
   ({ tiles: setup.tiles.map(row => row.map(tile => ({}))) });
 
-const randomItem = <T>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+export const randomItem = <T>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
 const getBag = (colors: TileColor[]): BagState => ({
   tiles: [randomItem(colors), randomItem(colors), randomItem(colors), randomItem(colors)]
 });
 
-export const getBags = (colors: TileColor[]): BagState[] => [
+export const getBags = (colors: TileColor[], bagCount: number, bagSize: number): BagState[] => [
   getBag(colors), getBag(colors), getBag(colors), getBag(colors)
 ];
 
@@ -80,7 +80,7 @@ export const prepareNextRoundState = (state: GameState, bankToEmpty?: number): P
     return {
       currentAction: CurrentAction.ChoosingFromBag,
       currentBag: 0,
-      bags: getBags(state.colors),
+      bags: null as any,// getBags(state.colors),
     };
   } else {
     return {};

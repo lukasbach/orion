@@ -16,6 +16,9 @@ export class GameStateSerializer {
       currentAction: this.game.currentAction,
       actioningBankId: this.game.actioningBankId,
       movingTileSourcePosition: this.game.movingTileSourcePosition,
+      end: this.game.end,
+      name: this.game.initialState.name,
+      bagPresets: this.game.initialState.bagPresets,
     };
   }
 }

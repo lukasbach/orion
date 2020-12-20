@@ -4,12 +4,11 @@ import reportWebVitals from './reportWebVitals';
 import { GameContainer } from './components/GameContainer';
 import { BoardContainer } from './components/BoardContainer';
 import './index.css';
+import { Application } from './components/Application';
 
 ReactDOM.render(
   <React.StrictMode>
-    <GameContainer>
-      <BoardContainer />
-    </GameContainer>
+    <Application />
   </React.StrictMode>,
   document.getElementById('root')
 );

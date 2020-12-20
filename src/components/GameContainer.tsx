@@ -1,50 +1,78 @@
 import * as React from 'react';
-import { useCallback, useContext, useRef, useState } from 'react';
-import { BankAction, CurrentAction, GameState, GameStateContextValue } from '../types';
-import { boardSetups } from '../boardSetups';
-import { getBags, getInitialBoardState } from '../utils';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { CurrentAction, GameState, GameStateContextValue } from '../types';
 import { Game } from '../game/Game';
+import { gameLevelToGameState } from '../gameLevelToGameState';
+import { Levels } from '../level';
+import { Dialog } from './Dialog';
+import { DialogHeader } from './DialogHeader';
+import { faBars, faFrownOpen, faGrinTongueWink, faHistory } from '@fortawesome/free-solid-svg-icons';
+import { DialogButton } from './DialogButton';
+import { TopRightMenu } from './TopRightMenu';
+import { useCompletionStore } from './useCompletionStore';
+import { useCachedLevelStore } from './useCachedLevelStore';
 
 export const GameStateContext = React.createContext<GameStateContextValue>(null as any);
 
 export const useGame = () => useContext(GameStateContext);
 export const useIsSmall = () => useContext(GameStateContext).small;
 
-const initialGame: GameState = {
-  boardSetup: boardSetups[0],
-  boardState: getInitialBoardState(boardSetups[0]),
-  bankSetup: {
-    banks: [
-      { tiles: 5, action: BankAction.Move },
-      { tiles: 4, action: BankAction.PlaceInRow, placementRow: 2 },
-      { tiles: 3, action: BankAction.PlaceInRow, placementRow: 3 },
-      { tiles: 4, action: BankAction.PlaceInRow, placementRow: 4 },
-      { tiles: 5, action: BankAction.Recolor },
-    ]
-  },
-  bankState: {
-    banks: [ { count: 0 }, { count: 0 }, { count: 0 }, { count: 0 }, { count: 0 }, ]
-  },
-  colors: [0, 1, 2, 3],
-  bags: getBags([0, 1, 2, 3]),
-  currentAction: CurrentAction.ChoosingFromBag,
-  currentBag: 0,
-  points: 10,
-  roundNumber: 0
-};
+const initialGame: GameState = gameLevelToGameState(Levels[0]);
 
-const gameAfterBagChoosing = JSON.parse('{"boardSetup":{"tiles":[[null,null,null,{},null,null,null],[null,null,{},{},{},null,null],[null,{},{},{},{},{},null],[{},{},{},{},{},{},{}],[null,{},{},{},{},{},null],[null,null,{},{},{},null,null],[null,null,null,{},null,null,null]],"rightOffset":0},"boardState":{"tiles":[[{},{},{},{},{},{},{}],[{},{},{},{},{},{},{}],[{},{},{},{},{},{},{}],[{},{},{},{},{},{},{}],[{},{},{},{},{},{},{}],[{},{},{},{},{},{},{}],[{},{},{},{},{},{},{}]]},"bankSetup":{"banks":[{"tiles":4,"action":"move"},{"tiles":3,"action":"place_in_row","placementRow":2},{"tiles":2,"action":"place_in_row","placementRow":3},{"tiles":3,"action":"place_in_row","placementRow":4},{"tiles":4,"action":"recolor"}]},"bankState":{"banks":[{"color":2,"count":4},{"color":1,"count":1},{"color":3,"count":2},{"color":0,"count":1},{"color":3,"count":4}]},"colors":[0,1,2,3],"bags":[{"tiles":[null,null,null,null]},{"tiles":[null,null,null,null]},{"tiles":[null,null,null,null]}],"currentAction":6,"currentBag":0,"points":0,"roundNumber":0}');
+export const GameContainer: React.FC<{
+  initialState?: GameState,
+  small?: boolean,
+  openAboutPage?: () => void,
+  backToLevelSelection?: () => void,
+  quit?: () => void,
+}> = props => {
+  const store = useCompletionStore();
+  const gameStates = useRef<string[]>([]);
+  const [state, setState] = useState<GameState>(props.initialState ?? initialGame);
+  const [originalState, setOriginalState] = useState<GameState>(JSON.parse(JSON.stringify(state)));
+  const game = useRef<Game | null>(null);
+  const [small, setSmall] = useState(props.small ?? false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useCachedLevelStore(gameStates.current[gameStates.current.length - 1], !!state.end);
 
-export const GameContainer: React.FC<{}> = props => {
-  const [state, setState] = useState<GameState>(initialGame);
-  const game = useRef(new Game(setState, state));
-  const [small, setSmall] = useState(false);
+  useEffect(() => {
+    game.current = new Game(setState, state, s => gameStates.current.push(JSON.stringify(s)));
+  }, [])
+
+  useEffect(() => props.initialState ? setOriginalState(JSON.parse(JSON.stringify(props.initialState))) : undefined, [props.initialState]);
+  useEffect(() => {
+    console.log("Check win")
+    if (state.end === 'won' && state.name) {
+      console.log("WoN!!")
+      store.updateLevelCompletion(state.name, state.points, state.roundNumber);
+    }
+  }, [state.end, state.name, state.points, state.roundNumber, store]);
 
   console.log(state)
+  console.log(JSON.stringify(state))
 
-  const updateState = useCallback((changed: Partial<GameState>) => {
-    setState({ ...state, ...changed });
-  }, [state]);
+  const retry = () => {
+    setState(originalState);
+    game.current?.forceUpdateState(originalState);
+    setIsMenuOpen(false);
+    gameStates.current = [];
+  }
+  const revert = () => {
+    if (state.currentAction === CurrentAction.Animation){
+      return;
+    }
+
+    const latestState = gameStates.current.pop();
+    if (latestState) {
+      const parsed = JSON.parse(latestState);
+      game.current?.forceUpdateState(parsed);
+      setState(parsed);
+    }
+  }
+
+  if (!game.current) {
+    return null;
+  }
 
   return (
     <GameStateContext.Provider value={{
@@ -52,6 +80,59 @@ export const GameContainer: React.FC<{}> = props => {
       game: game.current,
     }}>
       { props.children }
+      <TopRightMenu
+        actions={[
+          { text: 'Revert', icon: faHistory, onClick: revert },
+          { icon: faBars, onClick: () => setIsMenuOpen(true) },
+        ]}
+      />
+
+      <Dialog isOpen={state.end === 'won'} cantClose={true}>
+        <DialogHeader
+          title="Great job!"
+          icon={faGrinTongueWink}
+        />
+        <DialogButton onClick={props.backToLevelSelection}>
+          Back to level selection
+        </DialogButton>
+        <DialogButton onClick={props.openAboutPage}>
+          About
+        </DialogButton>
+        <DialogButton onClick={props.quit}>
+          Quit
+        </DialogButton>
+      </Dialog>
+
+      <Dialog isOpen={state.end === 'lost'} cantClose={true}>
+        <DialogHeader
+          title="Welp :/"
+          icon={faFrownOpen}
+        />
+        <DialogButton onClick={retry}>
+          Retry
+        </DialogButton>
+        <DialogButton onClick={props.openAboutPage}>
+          About
+        </DialogButton>
+        <DialogButton onClick={props.quit}>
+          Quit
+        </DialogButton>
+      </Dialog>
+
+      <Dialog isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
+        <DialogButton onClick={() => setIsMenuOpen(false)}>
+          Continue
+        </DialogButton>
+        <DialogButton onClick={retry}>
+          Retry
+        </DialogButton>
+        <DialogButton onClick={props.openAboutPage}>
+          About
+        </DialogButton>
+        <DialogButton onClick={props.quit}>
+          Quit
+        </DialogButton>
+      </Dialog>
     </GameStateContext.Provider>
   );
 };

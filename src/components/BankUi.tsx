@@ -9,6 +9,9 @@ import { BankActionButton } from './BankActionButton';
 import { tileColors } from '../tileColors';
 
 const styles = {
+  container: cxs({
+    pointerEvents: 'none',
+  }),
   rowContainer: cxs({
     display: 'flex',
     justifyContent: 'flex-end'
@@ -24,15 +27,19 @@ export const BankUi: React.FC<{}> = props => {
   const { banks: bankState } = state.bankState;
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.statContainer}>
         <GameStats />
       </div>
       { bankSetup.map((bank, bankId) => {
+        const isDummyBank = bank.tiles === 0;
         const bankColor = game.banks.getBank(bankId).color;
         const borderColor = bankColor !== undefined ? tileColors[bankColor] : undefined;
         return (
           <div className={styles.rowContainer}>
+            { isDummyBank && (
+              <CustomTile children="" noContent={true} color={'#fff'} />
+            )}
             { '_'.repeat(bank.tiles).split('').map((_, tileId) => {
               if (tileId >= bankState[bankId].count) {
                 if (game.currentAction === CurrentAction.PickingBank && game.bags.arePickedAddableToBank(bankId)) {
@@ -60,15 +67,17 @@ export const BankUi: React.FC<{}> = props => {
               }
             }) }
             <div style={{ width: '200px '}}>
-              <BankActionButton
-                action={bank.action}
-                clickable={(
-                  state.currentAction === CurrentAction.ChoosingBankToApply &&
-                  state.bankSetup.banks[bankId].tiles === state.bankState.banks[bankId].count &&
-                  game.banks.isActionAvailableInBank(bankId)
-                )}
-                onClick={() => game.actChooseAction(bankId)}
-              />
+              { !isDummyBank && (
+                <BankActionButton
+                  action={bank.action}
+                  clickable={(
+                    state.currentAction === CurrentAction.ChoosingBankToApply &&
+                    state.bankSetup.banks[bankId].tiles === state.bankState.banks[bankId].count &&
+                    game.banks.isActionAvailableInBank(bankId)
+                  )}
+                  onClick={() => game.actChooseAction(bankId)}
+                />
+              )}
             </div>
           </div>
         );

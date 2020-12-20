@@ -18,7 +18,9 @@ export const BoardUi: React.FC<{}> = props => {
   const { boardSetup, boardState } = state;
 
   return (
-    <div>
+    <div className={cxs({
+      marginRight: `${state.boardSetup.rightOffset * 70}px`
+    })}>
       { boardSetup.tiles.map((row, rowId) => (
         <div key={rowId} className={styles.rowContainer}>
           { row.map((tile, tileId) => {
