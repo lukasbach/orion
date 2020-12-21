@@ -167,3 +167,175 @@ export const CannotUseSecondBag: React.FC = () => (
     <BoardContainer />
   </GameContainer>
 );
+
+export const CannotUseFirstBag: React.FC = () => (
+  <GameContainer initialState={{
+    points: 15, colors: [0, 1, 2],
+    currentBag: 0, roundNumber: 0,
+    currentAction: CurrentAction.ChoosingFromBag,
+    bags: [
+      { tiles: [0, 0] },
+      { tiles: [0, 1] },
+      { tiles: [0, 1] },
+    ],
+    boardSetup: {
+      tiles: [
+        [C, C, C,],
+        [B, B, B,],
+        [A, A, A,],
+      ], rightOffset: 0,
+    },
+    bankSetup: {
+      banks: [
+        { tiles: 2, action: BankAction.Recolor },
+        { tiles: 2, action: BankAction.Move },
+        { tiles: 2, action: BankAction.PlaceInRow, placementRow: 2 },
+      ]
+    },
+    boardState: {
+      tiles: [
+        [{}, {}, {}, ],
+        [{}, {}, {}, ],
+        [{color: 0}, {color: 0}, {}, ],
+      ]
+    },
+    bankState: {
+      banks: [
+        { count: 1, color: 0 },
+        { count: 1, color: 0 },
+        { count: 2, color: 0 },
+      ]
+    },
+  }}>
+    <BoardContainer />
+  </GameContainer>
+);
+
+export const CannotUseFirstTwoBag: React.FC = () => (
+  <GameContainer initialState={{
+    points: 15, colors: [0, 1, 2],
+    currentBag: 0, roundNumber: 0,
+    currentAction: CurrentAction.ChoosingFromBag,
+    bags: [
+      { tiles: [0, 0] },
+      { tiles: [0, 0] },
+      { tiles: [0, 1] },
+    ],
+    boardSetup: {
+      tiles: [
+        [C, C, C,],
+        [B, B, B,],
+        [A, A, A,],
+      ], rightOffset: 0,
+    },
+    bankSetup: {
+      banks: [
+        { tiles: 2, action: BankAction.Recolor },
+        { tiles: 2, action: BankAction.Move },
+        { tiles: 2, action: BankAction.PlaceInRow, placementRow: 2 },
+      ]
+    },
+    boardState: {
+      tiles: [
+        [{}, {}, {}, ],
+        [{}, {}, {}, ],
+        [{color: 0}, {color: 0}, {}, ],
+      ]
+    },
+    bankState: {
+      banks: [
+        { count: 1, color: 0 },
+        { count: 1, color: 0 },
+        { count: 2, color: 0 },
+      ]
+    },
+  }}>
+    <BoardContainer />
+  </GameContainer>
+);
+
+export const CanEmptyAllBags: React.FC = () => (
+  <GameContainer initialState={{
+    points: 15, colors: [0, 1, 2],
+    currentBag: 0, roundNumber: 0,
+    currentAction: CurrentAction.ChoosingFromBag,
+    bags: [
+      { tiles: [0, 0] },
+      { tiles: [0, 0] },
+      { tiles: [0, 0] },
+    ],
+    boardSetup: {
+      tiles: [
+        [C, C, C,],
+        [B, B, B,],
+        [A, A, A,],
+      ], rightOffset: 0,
+    },
+    bankSetup: {
+      banks: [
+        { tiles: 2, action: BankAction.Recolor },
+        { tiles: 2, action: BankAction.Move },
+        { tiles: 2, action: BankAction.PlaceInRow, placementRow: 2 },
+      ]
+    },
+    boardState: {
+      tiles: [
+        [{}, {}, {}, ],
+        [{}, {}, {}, ],
+        [{color: 0}, {color: 0}, {}, ],
+      ]
+    },
+    bankState: {
+      banks: [
+        { count: 0, color: undefined },
+        { count: 0, color: undefined },
+        { count: 0, color: undefined },
+      ]
+    },
+  }}>
+    <BoardContainer />
+  </GameContainer>
+);
+
+export const NoValidBankInSecondBagAvailable: React.FC = () => (
+  <GameContainer initialState={{
+    points: 15, colors: [0, 1, 2],
+    currentBag: 0, roundNumber: 0,
+    currentAction: CurrentAction.ChoosingFromBag,
+    bags: [
+      { tiles: [0, 0] },
+      { tiles: [0, 0] },
+      { tiles: [0, 0] },
+    ],
+    boardSetup: {
+      tiles: [
+        [C, C, C,],
+        [B, B, B,],
+        [A, A, A,],
+      ], rightOffset: 0,
+    },
+    bankSetup: {
+      banks: [
+        { tiles: 2, action: BankAction.Recolor },
+        { tiles: 2, action: BankAction.Move },
+        { tiles: 2, action: BankAction.PlaceInRow, placementRow: 2 },
+      ]
+    },
+    boardState: {
+      tiles: [
+        [{}, {}, {}, ],
+        [{}, {}, {}, ],
+        [{color: 0}, {color: 0}, {}, ],
+      ]
+    },
+    bankState: {
+      banks: [
+        { count: 0, color: undefined },
+        { count: 2, color: 0 },
+        { count: 2, color: 0 },
+      ]
+    },
+  }}>
+    <BoardContainer />
+  </GameContainer>
+);

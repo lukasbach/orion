@@ -25,6 +25,7 @@ export class Game {
   ) {
     this.gameStateSerializer = new GameStateSerializer(this);
     this.forceUpdateState(initialState);
+    this.prepareNextBagPick().then(() => this.updateState()); // TODO doesnt work
     this.updateState();
     console.log("Init", this);
 
@@ -92,17 +93,22 @@ export class Game {
   }
 
   private async prepareNextBagPick() {
-    if (this.bags.noValidPicksLeft()) {
-      const penalty = this.bags.countUnpickedTiles();
-      await this.addPoints(-penalty);
-      if (this.points < 0) {
-        return;
-      }
-      // TODO remove items from bag here already
+    console.log("PREPARE NEXT BAG", this.bags.noValidPicksLeft(), this.banks.areActionsAvailable())
+    if (/*this.bags.currentBag === 'remainings' && */this.bags.noValidPicksLeft()) {
       if (this.banks.areActionsAvailable()) {
         this.currentAction = CurrentAction.ChoosingBankToApply;
       } else {
-        await this.prepareNextRound();
+        const penalty = this.bags.countUnpickedTiles();
+        await this.addPoints(-penalty, undefined, () => this.bags.removeUnpickedTile());
+        if (this.points < 0) {
+          return;
+        }
+        if (this.bags.currentBag === 'remainings') {
+          await this.prepareNextRound();
+        } else {
+          this.bags.bumpBagNumber();
+          await this.prepareNextBagPick();
+        }
       }
     } else {
       this.currentAction = CurrentAction.ChoosingFromBag;
@@ -243,10 +249,11 @@ export class Game {
     }
   }
 
-  private async addPoints(points: number, time?: number) {
+  private async addPoints(points: number, time?: number, forEveryPoint?: () => Promise<void>) {
     for (let i = 0; i < Math.abs(points); i++) {
       await this.wait(time);
       this.points += (points < 0 ? -1 : 1);
+      await forEveryPoint?.();
       this.updateState();
       if (this.points < 0) {
         await this.checkEnd();

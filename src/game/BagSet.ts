@@ -24,10 +24,30 @@ export class BagSet {
   }
 
   public countUnpickedTiles() {
-    return this.bags
+    return (this.currentBag === 'remainings' ? this.bags : [this.bags[this.currentBag]])
       .map(bag => bag.tiles.filter(tile => tile !== null))
       .reduce((a, b) => [...a, ...b], [])
       .length;
+  }
+
+  public async removeUnpickedTile() {
+    if (this.currentBag === 'remainings') {
+      for (const bag of this.bags) {
+        for (let i = 0; i < bag.tiles.length; i++) {
+          if (bag.tiles[i] !== null) {
+            bag.tiles[i] = null;
+            return;
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < this.bags[this.currentBag].tiles.length; i++) {
+        if (this.bags[this.currentBag].tiles[i] !== null) {
+          this.bags[this.currentBag].tiles[i] = null;
+          return;
+        }
+      }
+    }
   }
 
   private getPotentialBagPicks(): Array<{ color: TileColor, count: number }> {
@@ -121,7 +141,7 @@ export class BagSet {
     return this.picked;
   }
 
-  private bumpBagNumber() {
+  public bumpBagNumber() {
     if (this.currentBag === 'remainings') {
       return;
     }
