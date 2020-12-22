@@ -71,6 +71,7 @@ export const GameContainer: React.FC<{
     telemetryCall(TelemetryCodes.RetryLevel);
     telemetryCall(TelemetryCodes.RetryLevelPrefix + state.name);
   }
+
   const revert = () => {
     if (state.currentAction === CurrentAction.Animation){
       return;

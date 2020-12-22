@@ -8,6 +8,7 @@ import { gameLevelToGameState } from '../gameLevelToGameState';
 import { GameContainer } from './GameContainer';
 import { BoardContainer } from './BoardContainer';
 import { Dialog } from './Dialog';
+import { PrivacyNotice } from './PrivacyNotice';
 
 enum Page {
   Home,
@@ -19,6 +20,7 @@ export const Application: React.FC<{}> = props => {
   const [page, setPage] = useState(Page.Home);
   const [level, setLevel] = useState<GameState>();
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
   const { lastLevel } = useCachedLevelStore(undefined);
   let component: React.ReactNode;
 
@@ -34,6 +36,7 @@ export const Application: React.FC<{}> = props => {
             }
           }}
           onAbout={() => setAboutOpen(true)}
+          onPrivacyOpen={() => setPrivacyOpen(true)}
         />
       );
       break;
@@ -93,6 +96,7 @@ export const Application: React.FC<{}> = props => {
           Orion is &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.
         </p>
       </Dialog>
+      <Dialog isOpen={privacyOpen} onClose={() => setPrivacyOpen(false)} children={<PrivacyNotice />} />
     </>
   );
 };

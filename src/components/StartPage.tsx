@@ -103,8 +103,9 @@ export const StartPage: React.FC<{
   onContinue?: () => void,
   onPlay?: () => void,
   onAbout?: () => void,
+  onPrivacyOpen?: () => void,
 }> = props => {
-  const lastLevel = useCachedLevelStore(undefined);
+  const { lastLevel } = useCachedLevelStore(undefined);
   return (
     <div className={styles.container}>
       <div className={styles.bgContainer}>
@@ -116,9 +117,9 @@ export const StartPage: React.FC<{
       <div className={styles.leftBg} />
       <div className={styles.leftContainer}>
         <h1>Orion</h1>
-        { lastLevel && (
+        { /*lastLevel && (
           <button onClick={props.onContinue}>Continue</button>
-        )}
+        )*/ }
         <button onClick={props.onPlay}>Play Game</button>
         <a href="https://github.com/lukasbach/orion" target="_blank">
           <button>GitHub</button>
@@ -130,8 +131,9 @@ export const StartPage: React.FC<{
         <GitHubButton href="https://github.com/lukasbach/orion/issues" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue lukasbach/orion on GitHub">Issue</GitHubButton>
         <GitHubButton href="https://github.com/lukasbach/orion" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" aria-label="Star lukasbach/orion on GitHub">Star</GitHubButton>
         <p>
-          &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.
-          <a href="https://lukasbach.com/impress" target="_blank">Impress and Privacy Policy</a>.
+          &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.&nbsp;
+          <a href="https://lukasbach.com/impress" target="_blank">Impress</a>.&nbsp;
+          <a href="#" onClick={props.onPrivacyOpen}>Privacy Policy</a>.
         </p>
       </div>
     </div>
