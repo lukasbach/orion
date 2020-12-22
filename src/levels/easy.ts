@@ -15,13 +15,22 @@ const bankSetup: BankSetup = {
 
 const bridgeBankSetup: BankSetup = {
   banks: [
-    { tiles: 5, action: BankAction.Recolor },
+    { tiles: 5, action: BankAction.Move },
     { tiles: 4, action: BankAction.Move },
     { tiles: 3, action: BankAction.Move },
-    { tiles: 2, action: BankAction.Move },
+    { tiles: 2, action: BankAction.Recolor },
     { tiles: 1, action: BankAction.PlaceInRow, placementRow: 4 },
   ]
 };
+// const bridgeBankSetup: BankSetup = {
+//   banks: [
+//     { tiles: 5, action: BankAction.Recolor },
+//     { tiles: 4, action: BankAction.Move },
+//     { tiles: 3, action: BankAction.Move },
+//     { tiles: 2, action: BankAction.Move },
+//     { tiles: 1, action: BankAction.PlaceInRow, placementRow: 4 },
+//   ]
+// };
 
 const category: LevelCategory = LevelCategory.Easy;
 const points = 10;
@@ -31,7 +40,7 @@ const bagSize = 3;
 
 export const EasyLevels: GameLevel[] = [
   {
-    name: 'Level 1',
+    name: 'Gemini',
     bankSetup, points, colors,
     bagCount, bagSize, category,
     boardSetup: {
@@ -46,7 +55,7 @@ export const EasyLevels: GameLevel[] = [
     },
   },
   {
-    name: 'Level 2',
+    name: 'Crater',
     bankSetup, points, colors,
     bagCount, bagSize, category,
     boardSetup: {
@@ -61,7 +70,7 @@ export const EasyLevels: GameLevel[] = [
     },
   },
   {
-    name: 'Level 3',
+    name: 'Ursa Major',
     bankSetup, points, colors,
     bagCount, bagSize, category,
     boardSetup: {
@@ -76,7 +85,7 @@ export const EasyLevels: GameLevel[] = [
     },
   },
   {
-    name: 'Level 4',
+    name: 'Lyra',
     bankSetup, points, colors,
     bagCount, bagSize, category,
     boardSetup: {
@@ -91,7 +100,7 @@ export const EasyLevels: GameLevel[] = [
     },
   },
   {
-    name: 'Level 5',
+    name: 'Aquila',
     bankSetup: bridgeBankSetup,
     colors: [0, 1, 2, 3],
     points, bagSize, category,
@@ -108,24 +117,7 @@ export const EasyLevels: GameLevel[] = [
     },
   },
   {
-    name: 'Level 6',
-    bankSetup: bridgeBankSetup,
-    colors: [0, 1, 2, 3],
-    points, bagSize, category,
-    bagCount: 3,
-    boardSetup: {
-      tiles: [
-        [_, D, D, _,],
-        [C, _, _, _,],
-        [_, C, B, _,],
-        [_, _, _, B,],
-        [_, A, A, _,],
-      ],
-      rightOffset: 0,
-    },
-  },
-  {
-    name: 'Level 7',
+    name: 'Leo',
     bankSetup: bridgeBankSetup,
     colors: [0, 1, 2, 3],
     points, bagSize, category,
@@ -137,6 +129,23 @@ export const EasyLevels: GameLevel[] = [
         [A, D, C, _,],
         [_, _, _, B,],
         [A, A, A, _,],
+      ],
+      rightOffset: 0,
+    },
+  },
+  {
+    name: 'Taurus',
+    bankSetup: bridgeBankSetup,
+    colors: [0, 1, 2, 3],
+    points, bagSize, category,
+    bagCount: 3,
+    boardSetup: {
+      tiles: [
+        [_, D, D, _,],
+        [C, _, _, _,],
+        [_, C, B, _,],
+        [_, _, _, B,],
+        [_, A, A, _,],
       ],
       rightOffset: 0,
     },

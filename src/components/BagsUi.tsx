@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useGame } from './GameContainer';
 import { BagUi } from './BagUi';
 import cxs from 'cxs';
+import { CurrentAction } from '../types';
 
 const styles = {
   container: cxs({
@@ -19,6 +20,11 @@ export const BagsUi: React.FC<{}> = props => {
   return (
     <div className={styles.container}>
       { bags.map((bag, idx) => <BagUi bag={bag} key={idx} bagId={idx} />) }
+      { game.state.currentAction === CurrentAction.ChoosingBankToApply && (
+        <button onClick={() => game.game.forceNextRound()}>
+          Next round
+        </button>
+      ) }
     </div>
   );
 };

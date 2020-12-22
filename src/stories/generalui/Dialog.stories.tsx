@@ -6,6 +6,8 @@ import { GameContainer } from '../../components/GameContainer';
 import { BoardContainer } from '../../components/BoardContainer';
 import { DialogButton } from '../../components/DialogButton';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'General UI/Dialog',
   component: DialogComp,

@@ -4,6 +4,8 @@ import { StoryContainer } from './StoryContainer';
 import { TopRightMenu as TopRightMenuComp } from '../../components/TopRightMenu';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'General UI/Top Right Menu',
   component: TopRightMenuComp,

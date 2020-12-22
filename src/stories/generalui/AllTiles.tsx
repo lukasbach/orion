@@ -4,6 +4,8 @@ import { dummyTileColor, tileColors } from '../../tileColors';
 import { tileNames } from '../../tileNames';
 import { StoryContainer } from './StoryContainer';
 
+(window as any).noTelemetry = true;
+
 const Helper: React.FC<Omit<CustomTileProps, 'color'>> = props => (
   <div>
     <CustomTile

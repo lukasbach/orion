@@ -4,6 +4,8 @@ import { CustomTile } from '../../components/CustomTile';
 import { StoryContainer } from './StoryContainer';
 import { AllTiles } from './AllTiles';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'General UI/Custom Tiles/Regular',
   component: CustomTile,

@@ -2,6 +2,8 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { useCompletionStore } from '../../components/useCompletionStore';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'Store/Store Debugging',
 } as Meta;

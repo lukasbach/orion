@@ -10,6 +10,7 @@ export default {
 } as Meta;
 
 const { _, X, A, B, C, D, E, F} = levelHelpers;
+(window as any).noTelemetry = true;
 
 export const CannotMoveTile: React.FC = () => (
   <GameContainer initialState={{

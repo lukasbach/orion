@@ -15,24 +15,24 @@ const bankSetup: BankSetup = {
 
 const bridgeBankSetup: BankSetup = {
   banks: [
-    { tiles: 5, action: BankAction.Recolor },
+    { tiles: 5, action: BankAction.Move },
     { tiles: 4, action: BankAction.Move },
     { tiles: 3, action: BankAction.Move },
-    { tiles: 2, action: BankAction.Move },
+    { tiles: 2, action: BankAction.Recolor },
     { tiles: 1, action: BankAction.PlaceInRow, placementRow: 4 },
   ]
 };
 
 const category: LevelCategory = LevelCategory.Medium;
-const points = 10;
+const points = 20;
 const colors = [0, 1, 2] as any;
 const bagCount = 3;
 const bagSize = 3;
 
 export const MediumLevels: GameLevel[] = [
   {
-    name: 'Level 1',
-    bankSetup: bridgeBankSetup, points, colors,
+    name: 'Canes Venatici',
+    bankSetup: bridgeBankSetup, points, colors: [0, 1, 2, 3],
     bagCount, bagSize, category,
     boardSetup: {
       tiles: [
@@ -46,7 +46,7 @@ export const MediumLevels: GameLevel[] = [
     },
   },
   {
-    name: 'Level 2',
+    name: 'Hercules',
     category,
     boardSetup: {
       tiles: [
@@ -73,7 +73,7 @@ export const MediumLevels: GameLevel[] = [
     bagSize: 3,
   },
   {
-    name: 'Diag',
+    name: 'Fornax',
     category,
     boardSetup: {
       tiles: [
@@ -100,7 +100,7 @@ export const MediumLevels: GameLevel[] = [
     bagSize: 3,
   },
   {
-    name: 'Level 15',
+    name: 'Cygnus',
     boardSetup: {
       tiles: [
         [_, A, A, A, _,],
@@ -116,7 +116,7 @@ export const MediumLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level 16',
+    name: 'Scorpius',
     boardSetup: {
       tiles: [
         [_, B, B, B, _,],
@@ -132,7 +132,23 @@ export const MediumLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level 17',
+    name: 'Cepheus',
+    boardSetup: {
+      tiles: [
+        [_, _, A, B, A,],
+        [B, _, _, _, B,],
+        [A, _, _, _, A,],
+        [B, _, _, _, B,],
+        [A, B, A, _, _,],
+      ],
+      rightOffset: 1,
+    },
+    bankSetup,
+    category, points, colors,
+    bagCount, bagSize,
+  },
+  {
+    name: 'Draco',
     boardSetup: {
       tiles: [
         [_, _, A, A, A,],
@@ -148,23 +164,7 @@ export const MediumLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level 18',
-    boardSetup: {
-      tiles: [
-        [_, _, A, A, A,],
-        [B, _, _, _, B,],
-        [A, _, _, _, A,],
-        [B, _, _, _, B,],
-        [A, A, A, _, _,],
-      ],
-      rightOffset: 1,
-    },
-    bankSetup,
-    category, points, colors,
-    bagCount, bagSize,
-  },
-  {
-    name: 'Level 18',
+    name: 'Virgo',
     boardSetup: {
       tiles: [
         [_, B, _, _, _,],

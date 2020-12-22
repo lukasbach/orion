@@ -8,6 +8,8 @@ import { gameStateToPreview } from '../../gameStateToPreview';
 import { Levels } from '../../level';
 import { gameLevelToGameState } from '../../gameLevelToGameState';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'General UI/Level Preview',
   component: PreviewIcon,

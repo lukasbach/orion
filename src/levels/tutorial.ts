@@ -68,8 +68,8 @@ export const TutorialLevels: GameLevel[] = [
           return [
             'After you\'ve picked from every bag, you must pick the remaining tiles. Now, you pick from all bags ' +
             'at once, so in future levels you should make sure that you can fit in the remaining tiles.',
-            'If you cannot fit in all remaining colors, the game doesn\'t end, but you will loose one point for every' +
-            'tile that could not be fitted onto any bank. If your point count goes below zero, you loose.',
+            'If you cannot fit in all remaining colors, the game doesn\'t end, but you will loose one point for every ' +
+            'tile that did not fit into any bank. If your point count goes below zero, you loose.',
             'Choose the remaining red tiles to continue.'
           ]
         } else if (state.currentAction === CurrentAction.ChoosingBankToApply) {
@@ -181,9 +181,9 @@ export const TutorialLevels: GameLevel[] = [
     boardSetup: {
       tiles: [
         [A, A, A, A,],
-        [_, _, B, _,],
-        [_, _, B, _,],
-        [_, _, _, C,],
+        [_, B, _, _,],
+        [_, _, C, _,],
+        [_, _, _, A,],
       ],
       rightOffset: 0,
     },

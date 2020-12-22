@@ -6,6 +6,8 @@ import { Levels } from '../../level';
 import { gameLevelToGameState } from '../../gameLevelToGameState';
 import { LevelButton as LevelButtonComp } from '../../components/LevelButton';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'General UI/Level Button',
   component: LevelButtonComp,

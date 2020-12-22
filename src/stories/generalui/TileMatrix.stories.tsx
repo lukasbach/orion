@@ -5,6 +5,8 @@ import { StoryContainer } from './StoryContainer';
 import { AllTiles } from './AllTiles';
 import { TileMatrix as TileMatrixComp } from '../../components/TileMatrix';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'General UI/Tile Matrix',
   component: TileMatrixComp,

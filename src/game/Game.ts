@@ -4,6 +4,8 @@ import { GameBoard } from './GameBoard';
 import { BankSet } from './BankSet';
 import { BagSet } from './BagSet';
 import { POINTS_FOR_TILE_FINALIZATION } from '../constants';
+import { telemetryCall } from '../telemetry';
+import { TelemetryCodes } from '../TelemetryCodes';
 
 export class Game {
   public gameStateSerializer: GameStateSerializer;
@@ -95,21 +97,22 @@ export class Game {
   private async prepareNextBagPick() {
     console.log("PREPARE NEXT BAG", this.bags.noValidPicksLeft(), this.banks.areActionsAvailable())
     if (/*this.bags.currentBag === 'remainings' && */this.bags.noValidPicksLeft()) {
-      if (this.banks.areActionsAvailable()) {
-        this.currentAction = CurrentAction.ChoosingBankToApply;
-      } else {
-        const penalty = this.bags.countUnpickedTiles();
-        await this.addPoints(-penalty, undefined, () => this.bags.removeUnpickedTile());
-        if (this.points < 0) {
-          return;
-        }
-        if (this.bags.currentBag === 'remainings') {
-          await this.prepareNextRound();
-        } else {
-          this.bags.bumpBagNumber();
-          await this.prepareNextBagPick();
-        }
+      const penalty = this.bags.countUnpickedTiles();
+      await this.addPoints(-penalty, undefined, () => this.bags.removeUnpickedTile());
+      if (this.points < 0) {
+        return;
       }
+      if (this.bags.currentBag === 'remainings') {
+        if (this.banks.areActionsAvailable()) {
+          this.currentAction = CurrentAction.ChoosingBankToApply;
+        } else {
+          await this.prepareNextRound();
+        }
+      } else {
+        this.bags.bumpBagNumber();
+        await this.prepareNextBagPick();
+      }
+
     } else {
       this.currentAction = CurrentAction.ChoosingFromBag;
     }
@@ -150,15 +153,18 @@ export class Game {
     // this.pushRevertableState();
     switch (this.currentAction) {
       case CurrentAction.PlacingTile:
+        telemetryCall(TelemetryCodes.PlaceTile);
         await this.actPlaceTile(row, col);
         break;
       case CurrentAction.MovingTilePickingTile:
         await this.actStartMovingTile(row, col);
         break;
       case CurrentAction.MovingTileMoving:
+        telemetryCall(TelemetryCodes.MoveTile);
         await this.actCompleteMovingTile(row, col);
         break;
       case CurrentAction.RecoloringPickingTile:
+        telemetryCall(TelemetryCodes.RecolorTile);
         await this.actRecolorTile(row, col);
         break;
     }
@@ -220,12 +226,17 @@ export class Game {
     await this.checkEnd();
   }
 
+  public async forceNextRound() {
+    await this.prepareNextRound();
+    this.updateState();
+  }
+
   private async checkEnd() {
     if (this.points < 0) {
-      await this.wait();
-      this.end = 'lost';
-      this.currentAction = CurrentAction.Finished;
-      this.updateState();
+      // await this.wait();
+      // this.end = 'lost';
+      // this.currentAction = CurrentAction.Finished;
+      // this.updateState(); TODO
     } else if (this.board.isFinished()) {
       await this.wait();
       this.end = 'won';
@@ -245,6 +256,7 @@ export class Game {
 
   private async maybeAddPointsForTileFinalization(row: number, col: number) {
     if (this.board.isFinalized(row, col)) {
+      telemetryCall(TelemetryCodes.FinalizeTile);
       await this.addPoints(POINTS_FOR_TILE_FINALIZATION);
     }
   }
@@ -287,7 +299,6 @@ export class Game {
   }
 
   private pushRevertableState() {
-    console.log("!!!!!!!!!!!!!!PUSH", JSON.stringify(this.getSerializedState(), null ,2))
     this.onPushRevertableState?.(this.getSerializedState());
   }
 }

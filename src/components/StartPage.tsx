@@ -116,20 +116,20 @@ export const StartPage: React.FC<{
       </div>
       <div className={styles.leftBg} />
       <div className={styles.leftContainer}>
-        <h1>Voc</h1>
+        <h1>Orion</h1>
         { lastLevel && (
           <button onClick={props.onContinue}>Continue</button>
         )}
         <button onClick={props.onPlay}>Play Game</button>
-        <a href="https://github.com/lukasbach/voc" target="_blank">
+        <a href="https://github.com/lukasbach/orion" target="_blank">
           <button>GitHub</button>
         </a>
         <button onClick={props.onAbout}>About</button>
       </div>
       <div className={styles.metainfo}>
         <a className="github-button" href="https://github.com/lukasbach" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" aria-label="Follow @lukasbach on GitHub">Follow @lukasbach</a>
-        <a className="github-button" href="https://github.com/lukasbach/voc/issues" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue ntkme/github-buttons on GitHub">Issue</a>
-        <a className="github-button" href="https://github.com/lukasbach/voc" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" aria-label="Star lukasbach/voc on GitHub">Star</a>
+        <a className="github-button" href="https://github.com/lukasbach/orion/issues" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue ntkme/github-buttons on GitHub">Issue</a>
+        <a className="github-button" href="https://github.com/lukasbach/orion" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" aria-label="Star lukasbach/orion on GitHub">Star</a>
         <p>
           &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.
           <a href="https://lukasbach.com/impress" target="_blank">Impress and Privacy Policy</a>.

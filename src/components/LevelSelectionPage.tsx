@@ -10,6 +10,8 @@ import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
 import { CATEGORIES } from '../constants';
 import { GameLevel, LevelCategory } from '../types';
 import { useCompletionStore } from './useCompletionStore';
+import { telemetryCall } from '../telemetry';
+import { TelemetryCodes } from '../TelemetryCodes';
 
 const styles = {
   container: cxs({
@@ -66,7 +68,11 @@ export const LevelSelectionPage: React.FC<{
                 <LevelButtonComp
                   level={gameStateToPreview(gameLevelToGameState(level))}
                   completed={completed}
-                  onClick={() => props.onSelect?.(level)}
+                  onClick={() => {
+                    telemetryCall(TelemetryCodes.StartLevel);
+                    telemetryCall(TelemetryCodes.StartLevelPrefix + level.name);
+                    props.onSelect?.(level);
+                  }}
                 />
               );
             }) }

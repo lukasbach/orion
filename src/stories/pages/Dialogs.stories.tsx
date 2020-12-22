@@ -8,6 +8,8 @@ import { StoryContainer } from '../generalui/StoryContainer';
 import { gameLevelToGameState } from '../../gameLevelToGameState';
 import { Levels } from '../../level';
 
+(window as any).noTelemetry = true;
+
 export default {
   title: 'Pages/Dialogs',
   component: DialogComp,

@@ -11,6 +11,8 @@ import { DialogButton } from './DialogButton';
 import { TopRightMenu } from './TopRightMenu';
 import { useCompletionStore } from './useCompletionStore';
 import { useCachedLevelStore } from './useCachedLevelStore';
+import { telemetryCall } from '../telemetry';
+import { TelemetryCodes } from '../TelemetryCodes';
 
 export const GameStateContext = React.createContext<GameStateContextValue>(null as any);
 
@@ -33,6 +35,7 @@ export const GameContainer: React.FC<{
   const game = useRef<Game | null>(null);
   const [small, setSmall] = useState(props.small ?? false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasReportedEnd, setHasReportedEnd] = useState(false);
   useCachedLevelStore(gameStates.current[gameStates.current.length - 1], !!state.end);
 
   useEffect(() => {
@@ -45,8 +48,17 @@ export const GameContainer: React.FC<{
     if (state.end === 'won' && state.name) {
       console.log("WoN!!")
       store.updateLevelCompletion(state.name, state.points, state.roundNumber);
+      if (!hasReportedEnd) {
+        telemetryCall(TelemetryCodes.CompleteLevel);
+        telemetryCall(TelemetryCodes.CompleteLevelPrefix + state.name);
+        setHasReportedEnd(true);
+      }
+    } else if (state.end === 'lost' && state.name && !hasReportedEnd) {
+      telemetryCall(TelemetryCodes.FailLevel);
+      telemetryCall(TelemetryCodes.FailLevelPrefix + state.name);
+      setHasReportedEnd(true);
     }
-  }, [state.end, state.name, state.points, state.roundNumber, store]);
+  }, [state.end, state.name, state.points, state.roundNumber, store, hasReportedEnd]);
 
   console.log(state)
   console.log(JSON.stringify(state))
@@ -56,6 +68,8 @@ export const GameContainer: React.FC<{
     game.current?.forceUpdateState(originalState);
     setIsMenuOpen(false);
     gameStates.current = [];
+    telemetryCall(TelemetryCodes.RetryLevel);
+    telemetryCall(TelemetryCodes.RetryLevelPrefix + state.name);
   }
   const revert = () => {
     if (state.currentAction === CurrentAction.Animation){
@@ -67,7 +81,14 @@ export const GameContainer: React.FC<{
       const parsed = JSON.parse(latestState);
       game.current?.forceUpdateState(parsed);
       setState(parsed);
+      telemetryCall(TelemetryCodes.Revert);
     }
+  }
+
+  const quit = () => {
+    props.quit?.();
+    telemetryCall(TelemetryCodes.AbortLevel);
+    telemetryCall(TelemetryCodes.AbortLevelPrefix + state.name);
   }
 
   if (!game.current) {
@@ -105,7 +126,7 @@ export const GameContainer: React.FC<{
 
       <Dialog isOpen={state.end === 'lost'} cantClose={true}>
         <DialogHeader
-          title="Welp :/"
+          title="That didn't work out :/ Try again!"
           icon={faFrownOpen}
         />
         <DialogButton onClick={retry}>
@@ -114,7 +135,7 @@ export const GameContainer: React.FC<{
         <DialogButton onClick={props.openAboutPage}>
           About
         </DialogButton>
-        <DialogButton onClick={props.quit}>
+        <DialogButton onClick={quit}>
           Quit
         </DialogButton>
       </Dialog>
@@ -129,7 +150,7 @@ export const GameContainer: React.FC<{
         <DialogButton onClick={props.openAboutPage}>
           About
         </DialogButton>
-        <DialogButton onClick={props.quit}>
+        <DialogButton onClick={quit}>
           Quit
         </DialogButton>
       </Dialog>

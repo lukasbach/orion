@@ -4,6 +4,8 @@ import '../../index.css';
 import { GameContainer } from '../../components/GameContainer';
 import { GameState } from '../../types';
 
+(window as any).noTelemetry = true;
+
 export const StoryContainer: React.FC<{
   provideContext?: boolean,
   initialState?: GameState,

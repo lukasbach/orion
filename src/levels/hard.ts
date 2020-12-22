@@ -14,14 +14,14 @@ const bankSetup: BankSetup = {
 };
 
 const category: LevelCategory = LevelCategory.Hard;
-const points = 10;
+const points = 30;
 const colors: TileColor[] = [0, 1, 2, 3];
 const bagCount = 3;
 const bagSize = 4;
 
 export const HardLevels: GameLevel[] = [
   {
-    name: 'Level 5',
+    name: 'Pegasus',
     boardSetup: {
       tiles: [
         [A, B, C, D,],
@@ -45,7 +45,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level X2',
+    name: 'Triangulum',
     boardSetup: {
       tiles: [
         [_, _, A, _, _, _,],
@@ -63,7 +63,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level X1',
+    name: 'Serpens',
     boardSetup: {
       tiles: [
         [_, A, _, B, _, C, _, _,],
@@ -81,7 +81,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level X3',
+    name: 'Corvus',
     boardSetup: {
       tiles: [
         [_, C, _, _, _, B, _,],
@@ -109,7 +109,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level 3',
+    name: 'Cetus',
     boardSetup: {
       tiles: [
         [A, A, _, C, _, _,],
@@ -133,7 +133,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level X35',
+    name: 'Crux',
     boardSetup: {
       tiles: [
         [_, _, C, D, C, _, _,],
@@ -161,7 +161,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level X4',
+    name: 'Delphinus',
     boardSetup: {
       tiles: [
         [_, _, _, A, _, _, _,],
@@ -179,7 +179,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level 4',
+    name: 'Aquarius',
     boardSetup: {
       tiles: [
         [_, _, _, D, _, _, _,],
@@ -197,7 +197,7 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
-    name: 'Level X5',
+    name: 'Orion',
     boardSetup: {
       tiles: [
         [A, B, C, D, C, B, A,],

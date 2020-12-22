@@ -7,6 +7,7 @@ import { Levels } from '../../level';
 import { LevelCategory } from '../../types';
 import { TileMatrix as TileMatrixComp } from '../../components/TileMatrix';
 
+(window as any).noTelemetry = true;
 
 export default {
   title: 'Levels',

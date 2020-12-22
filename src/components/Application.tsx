@@ -70,12 +70,12 @@ export const Application: React.FC<{}> = props => {
         onClose={() => setAboutOpen(false)}
       >
         <p>
-          Voc is a singleplayer board game inspired by the board game Azul. The goal is to fill the board
+          Orion is a singleplayer board game inspired by the board game Azul. The goal is to fill the board
           with tiles in specific colors by cleverly choosing tiles from bags and arranging them in banks.
         </p>
         <p>
           The game was developed by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a> as Open
-          Source. The code is available at <a href="https://github.com/lukasbach/voc" target="_blank">GitHub</a>.
+          Source. The code is available at <a href="https://github.com/lukasbach/orion" target="_blank">GitHub</a>.
           If you enjoyed the game, I'd appreciate a star on the repo! You can also file any issues you've encountered
           there.
         </p>
@@ -86,11 +86,11 @@ export const Application: React.FC<{}> = props => {
           the collaborative IDE <a href="https://devsession.js.org" target="_blank">DevSession</a>.
         </p>
         <p>
-          The icons used in Voc are provided by <a href="https://fontawesome.com" target="_blank">Fontawesome</a>&nbsp;
+          The icons used in Orion are provided by <a href="https://fontawesome.com" target="_blank">Fontawesome</a>&nbsp;
           (<a href="https://fontawesome.com/license" target="_blank">License</a>).
         </p>
         <p>
-          Voc is &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.
+          Orion is &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.
         </p>
       </Dialog>
     </>
