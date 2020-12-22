@@ -32,6 +32,8 @@ const bridgeBankSetup: BankSetup = {
 //   ]
 // };
 
+// Names: https://en.wikipedia.org/wiki/List_of_proper_names_of_stars
+
 const category: LevelCategory = LevelCategory.Easy;
 const points = 10;
 const colors = [0, 1, 2] as any;

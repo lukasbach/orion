@@ -116,6 +116,22 @@ export const MediumLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
+    name: 'Aquila',
+    boardSetup: {
+      tiles: [
+        [A, A,],
+        [A, A,],
+        [A, A,],
+        [A, A,],
+        [A, A,],
+      ],
+      rightOffset: 1,
+    },
+    bankSetup,
+    category, points, colors: [0, 1, 2, 3],
+    bagCount, bagSize,
+  },
+  {
     name: 'Scorpius',
     boardSetup: {
       tiles: [

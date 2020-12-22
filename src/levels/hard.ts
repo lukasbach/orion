@@ -109,6 +109,24 @@ export const HardLevels: GameLevel[] = [
     bagCount, bagSize,
   },
   {
+    name: 'Andromeda',
+    boardSetup: {
+      tiles: [
+        [_, _, A, A, _, _,],
+        [_, A, A, A, A, _,],
+        [A, A, _, _, A, A,],
+        [_, _, _, _, _, _,],
+        [A, A, _, _, A, A,],
+        [_, A, A, A, A, _,],
+        [_, _, A, A, _, _,],
+      ],
+      rightOffset: 1,
+    },
+    bankSetup,
+    category, points, colors: [0, 1, 2, 3],
+    bagCount, bagSize,
+  },
+  {
     name: 'Cetus',
     boardSetup: {
       tiles: [
@@ -148,7 +166,7 @@ export const HardLevels: GameLevel[] = [
     },
     bankSetup: {
       banks: [
-        { tiles: 5, action: BankAction.Move },
+        { tiles: 5, action: BankAction.Recolor },
         { tiles: 4, action: BankAction.Move },
         { tiles: 3, action: BankAction.Move },
         { tiles: 2, action: BankAction.Move },
