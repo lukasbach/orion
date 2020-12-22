@@ -20,6 +20,8 @@ jobs:
         run: yarn
       - name: Build page
         run: yarn build
+        env:
+          CI: ''
       - name: Build CNAME
         run: yarn cname
       - name: Deploy to gh-pages
