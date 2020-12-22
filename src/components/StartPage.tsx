@@ -1,10 +1,9 @@
 import * as React from 'react';
 import cxs from 'cxs';
 import { TileMatrix } from './TileMatrix';
-import { GameContainer } from './GameContainer';
 import { DummyGameContainer } from './DummyGameContainer';
-import { useLayoutEffect } from 'react';
 import { useCachedLevelStore } from './useCachedLevelStore';
+import GitHubButton from 'react-github-btn';
 
 const LEFT_WIDTH = 500;
 
@@ -127,9 +126,9 @@ export const StartPage: React.FC<{
         <button onClick={props.onAbout}>About</button>
       </div>
       <div className={styles.metainfo}>
-        <a className="github-button" href="https://github.com/lukasbach" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" aria-label="Follow @lukasbach on GitHub">Follow @lukasbach</a>
-        <a className="github-button" href="https://github.com/lukasbach/orion/issues" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue ntkme/github-buttons on GitHub">Issue</a>
-        <a className="github-button" href="https://github.com/lukasbach/orion" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" aria-label="Star lukasbach/orion on GitHub">Star</a>
+        <GitHubButton href="https://github.com/lukasbach" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" aria-label="Follow @lukasbach on GitHub">Follow @lukasbach</GitHubButton>
+        <GitHubButton href="https://github.com/lukasbach/orion/issues" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue lukasbach/orion on GitHub">Issue</GitHubButton>
+        <GitHubButton href="https://github.com/lukasbach/orion" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" aria-label="Star lukasbach/orion on GitHub">Star</GitHubButton>
         <p>
           &copy; 2020 by <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>.
           <a href="https://lukasbach.com/impress" target="_blank">Impress and Privacy Policy</a>.
