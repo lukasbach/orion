@@ -1,26 +1,19 @@
-import Analytics from 'analytics';
-// @ts-ignore
-import googleAnalytics from '@analytics/google-analytics';
+import GA4React from 'ga-4-react';
 
 const win = window as any;
-win.dataLayer = win.dataLayer || [];
-const gtag = (...args: any[]) => win.dataLayer.push(args);
 
 let telemetryCall = (ev: string) => {};
 
 if (!localStorage.getItem("no-telemetry") && !win.noTelemetry) {
-  const analytics = Analytics({
-    app: 'awesome-app',
-    plugins: [
-      googleAnalytics({
-        trackingId: 'G-4B5ECK8F6Z'
-      })
-    ]
+  const ga4react = new GA4React('G-4B5ECK8F6Z');
+  ga4react.initialize().then((ga4) => {
+    ga4.gtag('event', 'init');
+    telemetryCall = (ev: string) => {
+      ga4.gtag('event', ev,)
+    };
+  },(err) => {
+    console.error(err)
   });
-
-  telemetryCall = (ev: string) => {
-    analytics.track(ev, {'category': 'custom'});
-  };
 }
 
 export { telemetryCall };
