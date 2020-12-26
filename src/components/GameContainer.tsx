@@ -31,7 +31,6 @@ export const GameContainer: React.FC<{
   const store = useCompletionStore();
   const gameStates = useRef<string[]>([]);
   const [state, setState] = useState<GameState>(props.initialState ?? initialGame);
-  const [originalState, setOriginalState] = useState<GameState>(JSON.parse(JSON.stringify(state)));
   const game = useRef<Game | null>(null);
   const [small, setSmall] = useState(props.small ?? false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,7 +41,6 @@ export const GameContainer: React.FC<{
     game.current = new Game(setState, state, s => gameStates.current.push(JSON.stringify(s)));
   }, [])
 
-  useEffect(() => props.initialState ? setOriginalState(JSON.parse(JSON.stringify(props.initialState))) : undefined, [props.initialState]);
   useEffect(() => {
     console.log("Check win")
     if (state.end === 'won' && state.name) {
@@ -64,12 +62,15 @@ export const GameContainer: React.FC<{
   console.log(JSON.stringify(state))
 
   const retry = () => {
-    setState(originalState);
-    game.current?.forceUpdateState(originalState);
-    setIsMenuOpen(false);
-    gameStates.current = [];
-    telemetryCall(TelemetryCodes.RetryLevel);
-    telemetryCall(TelemetryCodes.RetryLevelPrefix + state.name);
+    if (gameStates.current[0]) {
+      const state = JSON.parse(gameStates.current[0]);
+      game.current?.forceUpdateState(state);
+      setState(state);
+      setIsMenuOpen(false);
+      gameStates.current = [];
+      telemetryCall(TelemetryCodes.RetryLevel);
+      telemetryCall(TelemetryCodes.RetryLevelPrefix + state.name);
+    }
   }
 
   const revert = () => {

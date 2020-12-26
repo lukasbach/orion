@@ -44,6 +44,7 @@ export class Game {
     this.currentAction = state.currentAction;
     this.actioningBankId = state.actioningBankId;
     this.movingTileSourcePosition = state.movingTileSourcePosition;
+    this.end = undefined;
   }
 
   public getSerializedState() {
