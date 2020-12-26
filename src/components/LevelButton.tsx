@@ -59,7 +59,7 @@ export const LevelButton: React.FC<{
         <h2>{ props.level.nm }</h2>
         { props.completed && (
           <div className={styles.completedInfo}>
-            Completed with {props.completed.points} points&nbsp;
+            {props.completed.points} points after {props.completed.round} rounds&nbsp;
             <FontAwesomeIcon icon={faCheck} />
           </div>
         ) }

@@ -10,8 +10,8 @@ const styles = {
     justifyContent: 'center',
     margin: '-20px 0',
     flexDirection: 'column',
-    // height: '160px',
-    // overflow: 'auto',
+    height: '200px',
+    overflow: 'auto',
   }),
   inner: cxs({
     transition: '.2s all ease',

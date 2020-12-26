@@ -233,10 +233,10 @@ export class Game {
 
   private async checkEnd() {
     if (this.points < 0) {
-      // await this.wait();
-      // this.end = 'lost';
-      // this.currentAction = CurrentAction.Finished;
-      // this.updateState(); TODO
+      await this.wait();
+      this.end = 'lost';
+      this.currentAction = CurrentAction.Finished;
+      this.updateState();
     } else if (this.board.isFinished()) {
       await this.wait();
       this.end = 'won';
