@@ -44,6 +44,22 @@ export const AllTiles: React.FC<{}> = props => {
         clickable={true}
         noContent={true}
       />
+      <Helper
+        border={true}
+        clickable={true}
+        glowing={true}
+      />
+      <Helper
+        border={false}
+        clickable={true}
+        glowing={true}
+      />
+      <Helper
+        border={true}
+        clickable={true}
+        noContent={true}
+        glowing={true}
+      />
     </>
   );
 };

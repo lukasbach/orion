@@ -12,6 +12,7 @@ export const Tile: React.FC<{
   noContent?: boolean,
   clickable?: boolean,
   onClick?: () => void,
+  glowing?: boolean,
 }> = props => {
 
   return (

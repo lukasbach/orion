@@ -2,6 +2,8 @@ import * as React from 'react';
 import { BankAction } from '../types';
 import cxs from 'cxs';
 import cx from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const styles = {
   container: cxs({
@@ -10,6 +12,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     pointerEvents: 'all',
+    position: 'relative'
   }),
   inner: cxs({
     fontFamily: '"Nanum Pen Script", cursive',
@@ -55,6 +58,18 @@ const styles = {
     ':hover button': {
       color: 'rgba(255, 255, 255, 1)',
     }
+  }),
+  glowArrow: cxs({
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    fontSize: '24px',
+    animation: 'bank-action-arrow-effect 2s ease infinite',
   })
 }
 
@@ -62,6 +77,7 @@ export const BankActionButton: React.FC<{
   clickable: boolean,
   onClick: () => void,
   action: BankAction,
+  glowing?: boolean,
 }> = props => {
 
   return (
@@ -69,7 +85,7 @@ export const BankActionButton: React.FC<{
       <div
         className={cx(
           styles.inner,
-          props.clickable && styles.innerClickable
+          props.clickable && styles.innerClickable,
         )}
         onClick={props.clickable ? props.onClick : undefined}
       >
@@ -88,6 +104,11 @@ export const BankActionButton: React.FC<{
         <button>
           Use action
         </button>
+        { props.glowing && props.clickable && (
+          <div className={styles.glowArrow}>
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </div>
+        ) }
       </div>
     </div>
   );

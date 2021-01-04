@@ -6,6 +6,7 @@ import { CustomTile } from './CustomTile';
 import { dummyTileColor } from '../tileColors';
 import cxs from 'cxs';
 import cx from 'classnames';
+import { useTutorial } from './useTutorial';
 
 const styles = {
   container: cxs({
@@ -46,6 +47,7 @@ export const BagUi: React.FC<{
   bagId: number,
 }> = props => {
   const { game, state } = useGame();
+  const tutorial = useTutorial();
   const bag = props.bag;
 
   return (
@@ -70,26 +72,33 @@ export const BagUi: React.FC<{
       </svg>
       <div className={styles.inner}>
         {
-          bag.tiles.map(tile => (
-            tile !== null ? (
+          bag.tiles.map((tile, tileId) => {
+            if (tile === null) {
+              return (
+                <CustomTile
+                  color={dummyTileColor}
+                />
+              );
+            }
+
+            const clickable = (
+              (
+                state.currentBag === props.bagId ||
+                state.currentBag === 'remainings'
+              ) &&
+              state.currentAction === CurrentAction.ChoosingFromBag &&
+              game.bags.isColorAValidPick(tile)
+            );
+
+            return (
               <Tile
                 color={tile}
-                clickable={(
-                  (
-                    state.currentBag === props.bagId ||
-                    state.currentBag === 'remainings'
-                  ) &&
-                  state.currentAction === CurrentAction.ChoosingFromBag &&
-                  game.bags.isColorAValidPick(tile)
-                )}
+                clickable={clickable}
                 onClick={() => game.actChooseFromBag(tile)}
+                glowing={clickable && tutorial?.highlightBags?.[props.bagId]?.includes(tileId)}
               />
-            ) : (
-              <CustomTile
-                color={dummyTileColor}
-              />
-            )
-          ))
+            );
+          })
         }
       </div>
     </div>

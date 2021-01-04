@@ -39,3 +39,27 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background: #55637e;
 }
+
+@keyframes glow-effect {
+  0% {
+    box-shadow: #fff 0 0 0 0;
+  }
+  50% {
+    box-shadow: #fff 0 0 0 3px;
+  }
+  100% {
+    box-shadow: #fff 0 0 0 0;
+  }
+}
+
+@keyframes bank-action-arrow-effect {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

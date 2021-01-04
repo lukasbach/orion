@@ -63,7 +63,15 @@ export enum CurrentAction {
 
 export type BagNumber = number | 'remainings';
 
-export type TutorialRenderer = undefined | ((state: GameState) => string[] | undefined);
+export type TutorialRenderData = {
+  messages: string[];
+  highlightBags?: number[][];
+  highlightBoardTiles?: number[][];
+  highlightBanks?: number[][];
+  highlightBankActions?: number[];
+}
+
+export type TutorialRenderer = undefined | ((state: GameState) => TutorialRenderData | undefined);
 
 export interface GameState {
   name?: string;

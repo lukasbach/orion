@@ -7,6 +7,7 @@ import { Tile } from './Tile';
 import { GameStats } from './GameStats';
 import { BankActionButton } from './BankActionButton';
 import { tileColors } from '../tileColors';
+import { useTutorial } from './useTutorial';
 
 const styles = {
   container: cxs({
@@ -22,6 +23,7 @@ const styles = {
 }
 
 export const BankUi: React.FC<{}> = props => {
+  const tutorial = useTutorial();
   const { game, state } = useGame();
   const { banks: bankSetup } = state.bankSetup;
   const { banks: bankState } = state.bankState;
@@ -53,6 +55,7 @@ export const BankUi: React.FC<{}> = props => {
                       // onClick={() => game.perform(Mutations.chooseBank(bankId))}
                       onClick={() => game.actChooseBank(bankId)}
                       borderColor={borderColor}
+                      glowing={tutorial?.highlightBanks?.[bankId]?.includes(tileId)}
                     />
                   );
                 } else {
@@ -76,6 +79,7 @@ export const BankUi: React.FC<{}> = props => {
                     game.banks.isActionAvailableInBank(bankId)
                   )}
                   onClick={() => game.actChooseAction(bankId)}
+                  glowing={tutorial?.highlightBankActions?.includes(bankId)}
                 />
               )}
             </div>

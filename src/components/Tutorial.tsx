@@ -1,7 +1,6 @@
 import * as React from 'react';
 import cxs from 'cxs';
-import { useGame } from './GameContainer';
-import { useEffect, useState } from 'react';
+import { useTutorial } from './useTutorial';
 
 const styles = {
   container: cxs({
@@ -22,15 +21,7 @@ const styles = {
 };
 
 export const Tutorial: React.FC<{}> = props => {
-  const {game, state} = useGame();
-  const [tutorial, setTutorial] = useState<undefined | string[]>();
-
-  useEffect(() => {
-    const tut = game.getTutorial();
-    if (tut) {
-      setTutorial(tut);
-    }
-  }, [game, state]);
+  const tutorial = useTutorial();
 
   if (!tutorial) {
     return null;
@@ -39,7 +30,7 @@ export const Tutorial: React.FC<{}> = props => {
   return (
     <div className={styles.container}>
       <div className={styles.inner}>
-        { tutorial?.map(tut => <p key={tut}>{tut}</p>) }
+        { tutorial?.messages?.map(tut => <p key={tut}>{tut}</p>) }
       </div>
     </div>
   );

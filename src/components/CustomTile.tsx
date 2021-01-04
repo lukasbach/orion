@@ -35,6 +35,9 @@ const styles = {
     margin: '-6px 0 0 0',
     textAlign: 'center'
   }),
+  containerGlowing: cxs({
+    animation: 'glow-effect 2s infinite',
+  }),
   containerSmall: cxs({
     width: '40px',
     height: '40px',
@@ -53,7 +56,7 @@ const styles = {
   innerClickable: cxs({
     cursor: 'pointer',
     ':hover': {
-      boxShadow: 'rgba(255, 255, 255, .4) 0px 14px 10px inset',
+      boxShadow: 'rgba(255, 255, 255, .45) 0px 16px 10px inset',
     },
     ':active': activeStyles,
   }),
@@ -68,6 +71,7 @@ export interface CustomTileProps {
   clickable?: boolean,
   onClick?: () => void,
   borderColor?: string,
+  glowing?: boolean,
 }
 
 export const CustomTile: React.FC<CustomTileProps> = props => {
@@ -78,18 +82,20 @@ export const CustomTile: React.FC<CustomTileProps> = props => {
       className={cx(
         styles.container,
         small && styles.containerSmall,
-        props.border && cxs({
+        (props.border || props.glowing) && cxs({
           borderColor: Color(props.borderColor ?? props.color).darken(.4).toString()
         }),
         cxs({
           backgroundColor: !props.noContent ? Color(props.color).darken(.2).toString() : undefined,
         }),
         props.clickable && props.noContent && cxs({
-          cursor: 'pointer',
+          cursor: 'pointer !important',
           ':hover': {
-            boxShadow: `${Color(props.color).alpha(.5).toString()} 0px 4px 13px 4px inset`,
+            // boxShadow: `${Color(props.color).alpha(.5).toString()} 0px 4px 13px 4px inset`,
+            borderColor: 'white'
           }
-        })
+        }),
+        props.glowing && styles.containerGlowing,
       )}
       onClick={props.clickable ? props.onClick : undefined}
     >
